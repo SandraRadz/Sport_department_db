@@ -4,11 +4,10 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 
 public class Table {
-    private String nameOfTable;
-    private String nameInDB;
-    private int numOfColumn;
-    private JFrame frame;
-    //private String query;
+    protected String nameOfTable;
+    protected String nameInDB;
+    protected int numOfColumn;
+    protected JFrame frame;
 
     public static JLabel label = new JLabel(" ");
 
@@ -17,7 +16,14 @@ public class Table {
         this.nameInDB=nameDB;
         this.numOfColumn=num;
         this.frame=new JFrame(nameT);
-        //this.query="select * from "+ this.nameInDB +";";
+        return;
+    }
+
+    public Table (){
+        this.nameOfTable="test";
+        this.nameInDB="bank";
+        this.numOfColumn=1;
+        this.frame=new JFrame(this.nameOfTable);
         return;
     }
 
@@ -33,10 +39,6 @@ public class Table {
         return this.numOfColumn;
     }
 
-    //public String getQuery(){
-    //    return this.query;
-    //}
-
     public void setNameOfTable(String name){
         this.nameOfTable=name;
     }
@@ -49,10 +51,6 @@ public class Table {
         this.numOfColumn=num;
     }
 
-    //public void setQuery(String newquery){
-    //  this.query=newquery;
-    //}
-
 
     public void createWindow() throws SQLException {
         JFrame.setDefaultLookAndFeelDecorated(true);
@@ -61,11 +59,8 @@ public class Table {
         String query = "select * from bank;";
         ResultSet rs =db.select(query);
         while (rs.next()) {
-            //JLabel label = new JLabel(" ");
-            // int count = rs.getString(1);
             System.out.println(rs.getString(1) + "  "+rs.getString(2));
             label.setText(label.getText()+"\n"+rs.getInt(1) + "  "+rs.getString(2));
-            //frame.getContentPane().add(label);
         }
         db.close();
         frame.getContentPane().add(label);
