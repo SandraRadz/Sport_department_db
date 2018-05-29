@@ -3,7 +3,7 @@ import java.awt.*;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
-public class Table {
+public class Window {
     protected String nameOfTable;
     protected String nameInDB;
     protected int numOfColumn;
@@ -11,7 +11,7 @@ public class Table {
 
     public static JLabel label = new JLabel(" ");
 
-    public Table (String nameT, String nameDB, int num){
+    public Window(String nameT, String nameDB, int num){
         this.nameOfTable=nameT;
         this.nameInDB=nameDB;
         this.numOfColumn=num;
@@ -19,7 +19,7 @@ public class Table {
         return;
     }
 
-    public Table (){
+    public Window(){
         this.nameOfTable="test";
         this.nameInDB="bank";
         this.numOfColumn=1;
@@ -52,22 +52,18 @@ public class Table {
     }
 
 
-    public void createWindow() throws SQLException {
+    public void show() throws SQLException {
+
         JFrame.setDefaultLookAndFeelDecorated(true);
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        DataBase db = new DataBase();
-        String query = "select * from bank;";
-        ResultSet rs =db.select(query);
-        while (rs.next()) {
-            System.out.println(rs.getString(1) + "  "+rs.getString(2));
-            label.setText(label.getText()+"\n"+rs.getInt(1) + "  "+rs.getString(2));
-        }
-        db.close();
-        frame.getContentPane().add(label);
-        frame.setPreferredSize(new Dimension(700, 500));
-        frame.pack();
+        Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
+        frame.setSize(1000,800);
+        frame.setLayout(null);
         frame.setVisible(true);
+
     }
+
+
 }
 
 

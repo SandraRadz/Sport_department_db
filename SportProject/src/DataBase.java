@@ -9,7 +9,7 @@ public class DataBase {
     // JDBC variables for opening and managing connection
     private static Connection con;
     private static Statement stmt;
-    private static ResultSet rs;
+    private static ResultSet rs=null;
     //private static String query;
 
     public DataBase() {
@@ -22,6 +22,32 @@ public class DataBase {
             e.printStackTrace();
         }
         return;
+    }
+    public void addTables(){
+        String query = "";
+        try {
+            query = "CREATE TABLE IF NOT EXISTS bank ("+
+                    "MFI_bank VARCHAR(6) NOT NULL,"+
+                    "name_of_bank VARCHAR(150) NOT NULL,"+
+                    "PRIMARY KEY (MFI_bank));";
+            stmt.executeUpdate(query);
+
+            query = "CREATE TABLE IF NOT EXISTS bank ("+
+                    "MFI_bank VARCHAR(6) NOT NULL,"+
+                    "name_of_bank VARCHAR(150) NOT NULL,"+
+                    "PRIMARY KEY (MFI_bank));";
+            stmt.executeUpdate(query);
+
+            query = "CREATE TABLE IF NOT EXISTS bank ("+
+                    "MFI_bank VARCHAR(6) NOT NULL,"+
+                    "name_of_bank VARCHAR(150) NOT NULL,"+
+                    "PRIMARY KEY (MFI_bank));";
+            stmt.executeUpdate(query);
+
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
     }
 
     public ResultSet select(String what, String from, String where) throws SQLException {//select from... query
@@ -46,10 +72,10 @@ public class DataBase {
     //видалення
 
 
-    public void close(){ //not forget to close throws after using db
+    public void close() throws SQLException { //not forget to close throws after using db
         try { con.close(); } catch(SQLException se) { /*can't do anything */ }
         try { stmt.close(); } catch(SQLException se) { /*can't do anything */ }
-        try { rs.close(); } catch(SQLException se) { /*can't do anything */ }
+        if(rs!=null)try { rs.close(); } catch(SQLException se) { /*can't do anything */ }
     }
 
 }

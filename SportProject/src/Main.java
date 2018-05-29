@@ -6,15 +6,19 @@ public class Main {
         javax.swing.SwingUtilities.invokeLater(new Runnable() {
 
             public void run() {
-                Table t = new Table("First", "bank", 6);
-                TableAll ta = new TableAll("Second", "bank", 6);
+                //Window t = new Window("First", "bank", 6);
+                DataBase db = new DataBase();
+                db.addTables();
                 try {
-                    t.createWindow();
-                    ta.createWindow();
+                    SimpleTable ta = new SimpleTable("Банки", "bank", 6, db);
+                    ta.show();
+                    db.close();
                 } catch (SQLException e) {
                     e.printStackTrace();
                 }
+
             }
+
 
 
         });
