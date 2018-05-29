@@ -6,13 +6,13 @@ public class Main {
         javax.swing.SwingUtilities.invokeLater(new Runnable() {
 
             public void run() {
-                //Window t = new Window("First", "bank", 6);
+                //System.setProperty("file.encoding","UTF-8");
                 DataBase db = new DataBase();
                 db.addTables();
                 try {
-                    SimpleTable ta = new SimpleTable("Банки", "bank", 6, db);
+                    ShowResPage ta = new ShowResPage("Постачальники", "providers",  db);
                     ta.show();
-                    db.close();
+
                 } catch (SQLException e) {
                     e.printStackTrace();
                 }

@@ -4,11 +4,9 @@ import java.sql.SQLException;
 
 public class WindowMenu extends Window {
 
-
-    public WindowMenu(String nameT, String nameDB, int num){
-        super(nameT, nameDB, num);
+    public WindowMenu(String nameT){
+        super(nameT);
             return;
-
     }
 
     @Override
@@ -21,36 +19,34 @@ public class WindowMenu extends Window {
         frame.add(name);
 
 
-        JButton profile = new JButton("Профіль");
+        JButton profile = new JButton("ПРОФІЛЬ");
         profile.setSize(90, 30);
-        profile.setLocation(frame.getWidth()/2-100 , 20);
+        profile.setLocation(frame.getWidth()/2-120 , 20);
         frame.add(profile);
 
 
-        JButton readme = new JButton("Звіти");
+        JButton readme = new JButton("ЗВІТИ");
         readme.setSize(80, 30);
         readme.setLocation(profile.getX() + 130, 20);
         frame.add(readme);
 
-        JButton tables = new JButton("Таблиці");
+        JButton tables = new JButton("ТАБЛИЦІ");
         tables.setSize(80, 30);
         tables.setLocation(readme.getX() + 110, 20);
         frame.add(tables);
 
 
-        JButton exit = new JButton("Вихід");
+        JButton exit = new JButton("ВИХІД");
         exit.setSize(80, 30);
         exit.setLocation(tables.getX()+ 110, 20);
         frame.add(exit);
 
 
-        JButton help = new JButton("Допомога");
-        help.setSize(100, 30);
+        JButton help = new JButton("ДОПОМОГА");
+        help.setSize(120, 30);
         help.setLocation(exit.getX()+ 110, 20);
         frame.add(help);
         frame.setVisible(true);
-
     }
-
 
 }

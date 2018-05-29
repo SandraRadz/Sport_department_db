@@ -919,22 +919,86 @@
       <DefaultForCharset>0</DefaultForCharset>
     </collation>
     <table id="231" parent="6" name="bank"/>
-    <column id="232" parent="231" name="MFI_bank">
+    <table id="232" parent="6" name="nomenofdel"/>
+    <table id="233" parent="6" name="regofstor"/>
+    <column id="234" parent="231" name="MFI_bank">
       <Position>1</Position>
       <DataType>varchar(6)|0s</DataType>
       <NotNull>1</NotNull>
       <ColumnKind>normal</ColumnKind>
     </column>
-    <column id="233" parent="231" name="name_of_bank">
+    <column id="235" parent="231" name="name_of_bank">
       <Position>2</Position>
       <DataType>varchar(150)|0s</DataType>
       <NotNull>1</NotNull>
       <ColumnKind>normal</ColumnKind>
     </column>
-    <key id="234" parent="231" name="PRIMARY">
+    <key id="236" parent="231" name="PRIMARY">
       <NameSurrogate>1</NameSurrogate>
       <ColNames>MFI_bank</ColNames>
       <Primary>1</Primary>
+    </key>
+    <column id="237" parent="232" name="name_of_goods">
+      <Position>1</Position>
+      <DataType>char(30)|0s</DataType>
+      <NotNull>1</NotNull>
+      <ColumnKind>normal</ColumnKind>
+    </column>
+    <column id="238" parent="232" name="accountancy_account">
+      <Position>2</Position>
+      <DataType>int(11)|0s</DataType>
+      <NotNull>1</NotNull>
+      <ColumnKind>normal</ColumnKind>
+    </column>
+    <column id="239" parent="232" name="order_number">
+      <Position>3</Position>
+      <DataType>int(11)|0s</DataType>
+      <NotNull>1</NotNull>
+      <ColumnKind>normal</ColumnKind>
+    </column>
+    <column id="240" parent="232" name="unit">
+      <Position>4</Position>
+      <DataType>char(30)|0s</DataType>
+      <NotNull>1</NotNull>
+      <ColumnKind>normal</ColumnKind>
+    </column>
+    <key id="241" parent="232" name="PRIMARY">
+      <NameSurrogate>1</NameSurrogate>
+      <ColNames>name_of_goods</ColNames>
+      <Primary>1</Primary>
+    </key>
+    <column id="242" parent="233" name="id_of_storage">
+      <Position>1</Position>
+      <DataType>mediumint(9)|0s</DataType>
+      <NotNull>1</NotNull>
+      <SequenceIdentity>1</SequenceIdentity>
+      <ColumnKind>normal</ColumnKind>
+    </column>
+    <column id="243" parent="233" name="responsible_person">
+      <Position>2</Position>
+      <DataType>varchar(50)|0s</DataType>
+      <NotNull>1</NotNull>
+      <ColumnKind>normal</ColumnKind>
+    </column>
+    <column id="244" parent="233" name="address">
+      <Position>3</Position>
+      <DataType>varchar(50)|0s</DataType>
+      <NotNull>1</NotNull>
+      <ColumnKind>normal</ColumnKind>
+    </column>
+    <index id="245" parent="233" name="address">
+      <ColNames>address</ColNames>
+      <Unique>1</Unique>
+      <Type>btree</Type>
+    </index>
+    <key id="246" parent="233" name="PRIMARY">
+      <NameSurrogate>1</NameSurrogate>
+      <ColNames>id_of_storage</ColNames>
+      <Primary>1</Primary>
+    </key>
+    <key id="247" parent="233" name="address">
+      <ColNames>address</ColNames>
+      <UnderlyingIndexName>address</UnderlyingIndexName>
     </key>
   </database-model>
 </dataSource>

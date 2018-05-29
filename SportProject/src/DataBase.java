@@ -2,7 +2,7 @@ import java.sql.*;
 
 public class DataBase {
     // JDBC URL, username and password of MySQL server
-    private static final String url = "jdbc:mysql://localhost:3306/sport_department";
+    private static final String url = "jdbc:mysql://localhost:3306/sport_department?useUnicode=true&characterEncoding=utf-8";
     private static final String user = "root";
     private static final String password = "root";
 
@@ -15,6 +15,7 @@ public class DataBase {
     public DataBase() {
         try {
             this.con = DriverManager.getConnection(url, user, password);
+
             stmt = con.createStatement();
             //stmt.executeUpdate(this.query);
             stmt = con.createStatement();
@@ -32,18 +33,42 @@ public class DataBase {
                     "PRIMARY KEY (MFI_bank));";
             stmt.executeUpdate(query);
 
-            query = "CREATE TABLE IF NOT EXISTS bank ("+
-                    "MFI_bank VARCHAR(6) NOT NULL,"+
-                    "name_of_bank VARCHAR(150) NOT NULL,"+
-                    "PRIMARY KEY (MFI_bank));";
+
+            query = "CREATE TABLE IF NOT EXISTS nomenOfDel ("+
+                    "name_of_goods CHAR(30) NOT NULL,"+
+                    "accountancy_account INT NOT NULL,"+
+                    "order_number INT NOT NULL,"+
+                    "unit CHAR(30) NOT NULL,"+
+                    "PRIMARY KEY (name_of_goods));";
             stmt.executeUpdate(query);
 
-            query = "CREATE TABLE IF NOT EXISTS bank ("+
-                    "MFI_bank VARCHAR(6) NOT NULL,"+
-                    "name_of_bank VARCHAR(150) NOT NULL,"+
-                    "PRIMARY KEY (MFI_bank));";
+
+            query = "CREATE TABLE IF NOT EXISTS providers ("+
+                    "provider_id INT NOT NULL ,"+
+                    "name_of_provider VARCHAR(255) NOT NULL,"+
+                    "city VARCHAR(255) NOT NULL,"+
+                    "street VARCHAR(255) NOT NULL,"+
+                    "built VARCHAR(255) NOT NULL,"+
+                    "flat INT,"+
+                     "phone VARCHAR(20) NOT NULL,"+
+                    "PRIMARY KEY (provider_id));";
             stmt.executeUpdate(query);
 
+            query = "CREATE TABLE IF NOT EXISTS regOfStor ("+
+                    "id_of_storage MEDIUMINT NOT NULL AUTO_INCREMENT,"+
+                    "responsible_person VARCHAR(50) NOT NULL,"+
+                    "address VARCHAR(50) NOT NULL,"+
+                    "PRIMARY KEY (id_of_storage),"+
+                    "UNIQUE(address));";
+            stmt.executeUpdate(query);
+
+           // query = "CREATE TABLE IF NOT EXISTS accounts ("+
+             //       "account_id INT NOT NULL,"+
+               //     "MFI_bank INT NOT NULL,"+
+                 //   "PRIMARY KEY (account_id),"+
+                  //  "CONSTRAINT FK_MFIBank FOREIGN KEY (MFI_bank) REFERENCES bank(MFI_bank) "+
+                 //   "ON DELETE CASCADE ON UPDATE CASCADE );";
+            //stmt.executeUpdate(query);
 
         } catch (SQLException e) {
             e.printStackTrace();
@@ -66,11 +91,17 @@ public class DataBase {
         return rs;
     }
 
+    public void add(String query) throws SQLException {
+        //con.createStatement().executeQuery("set character set utf8_koi8");
+        stmt.executeUpdate(query);
+    }
     //вставка. Поки ніяких ідей для того, щоб загально прописати назви таблиць при вставці немає
     //лише світч кайс
 
     //видалення
-
+    public void delete(String query) throws SQLException {
+        stmt.executeUpdate(query);
+    }
 
     public void close() throws SQLException { //not forget to close throws after using db
         try { con.close(); } catch(SQLException se) { /*can't do anything */ }
