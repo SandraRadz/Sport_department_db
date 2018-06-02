@@ -5,6 +5,8 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.Vector;
 
 public class ShowResPage extends WindowMenu {
     Color or = new Color(246, 184, 61);
@@ -14,11 +16,14 @@ public class ShowResPage extends WindowMenu {
     private String query;
     protected String nameInDB;
     JTable table;
+    JScrollPane scrollPane;
+    int lineCount;
+    Vector r, v;
 
     public ShowResPage(String nameT, String nameDB, DataBase dataBase) {
         super(nameT);
-        this.nameInDB=nameDB;
         this.dataBase=dataBase;
+        this.nameInDB=nameDB;
         this.query="select * from "+this.nameInDB +";";
     }
 
@@ -27,6 +32,144 @@ public class ShowResPage extends WindowMenu {
     public void show() throws SQLException {
         super.show();
         addButtons();
+
+        int y = 20;
+        JButton bank = new JButton("БАНКИ");
+        bank.setSize(150,30);
+        bank.setLocation(frame.getWidth()/30,y);
+        bank.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                ShowResPage newP = new ShowResPage("БАНКИ", "bank", dataBase);
+                try {
+                    newP.show();
+                } catch (SQLException e1) {
+                    e1.printStackTrace();
+                }
+                frame.dispose();
+            }
+        });
+
+        frame.add(bank);
+        y+=30;
+
+        JButton accounts = new JButton("РАХУНКИ");
+        accounts.setSize(150,30);
+        accounts.setLocation(frame.getWidth()/30,y);
+        accounts.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                ShowResPage newP = new ShowResPage("РАХУНКИ", "accounts", dataBase);
+                try {
+                    newP.show();
+                } catch (SQLException e1) {
+                    e1.printStackTrace();
+                }
+                frame.dispose();
+            }
+        });
+        frame.add(accounts);
+        y+=30;
+
+        JButton bill = new JButton("НАКЛАДНІ");
+        bill.setSize(150,30);
+        bill.setLocation(frame.getWidth()/30,y);
+        bill.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                ShowResPage newP = new ShowResPage("НАКЛАДНІ", "bill", dataBase);
+                try {
+                    newP.show();
+                } catch (SQLException e1) {
+                    e1.printStackTrace();
+                }
+                frame.dispose();
+            }
+        });
+        frame.add(bill);
+        y+=30;
+
+        JButton nomenOfDel = new JButton("ТОВАРИ");
+        nomenOfDel.setSize(150,30);
+        nomenOfDel.setLocation(frame.getWidth()/30,y);
+        nomenOfDel.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                ShowResPage newP = new ShowResPage("ТОВАРИ", "nomenOfDel", dataBase);
+                try {
+                    newP.show();
+                } catch (SQLException e1) {
+                    e1.printStackTrace();
+                }
+                frame.dispose();
+            }
+        });
+        frame.add(nomenOfDel);
+        y+=30;
+
+        JButton providers = new JButton("ПОСТАЧАЛЬНИКИ");
+        providers.setSize(150,30);
+        providers.setLocation(frame.getWidth()/30,y);
+        providers.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                ShowResPage newP = new ShowResPage("ПОСТАЧАЛЬНИКИ", "providers", dataBase);
+                try {
+                    newP.show();
+                } catch (SQLException e1) {
+                    e1.printStackTrace();
+                }
+                frame.dispose();
+            }
+        });
+        frame.add(providers);
+        y+=30;
+
+        JButton goodsOnStor = new JButton("ЗАПАСИ НА СКЛАДАХ");
+        goodsOnStor.setSize(150,30);
+        goodsOnStor.setLocation(frame.getWidth()/30,y);
+        goodsOnStor.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                ShowResPage newP = new ShowResPage("ЗАПАСИ НА СКЛАДАХ", "goodsOnStor", dataBase);
+                try {
+                    newP.show();
+                } catch (SQLException e1) {
+                    e1.printStackTrace();
+                }
+                frame.dispose();
+            }
+        });
+        frame.add(goodsOnStor);
+        y+=30;
+
+        JButton storages = new JButton("СКЛАДИ");
+        storages.setSize(150,30);
+        storages.setLocation(frame.getWidth()/30,y);
+        storages.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                ShowResPage newP = new ShowResPage("СКЛАДИ", "regOfStor", dataBase);
+                try {
+                    newP.show();
+                } catch (SQLException e1) {
+                    e1.printStackTrace();
+                }
+                frame.dispose();
+            }
+        });
+        frame.add(storages);
+        y+=30;
+
+        JButton contracts = new JButton("УГОДИ");
+        contracts.setSize(150,30);
+        contracts.setLocation(frame.getWidth()/30,y);
+        contracts.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                ShowResPage newP = new ShowResPage("УГОДИ", "contracts", dataBase);
+                try {
+                    newP.show();
+                } catch (SQLException e1) {
+                    e1.printStackTrace();
+                }
+                frame.dispose();
+            }
+        });
+        frame.add(contracts);
+        y+=30;
 
 
         addDBTable(30, 300, query);
@@ -41,13 +184,19 @@ public class ShowResPage extends WindowMenu {
         addItem.setBackground(or);
         addItem.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
-                AddItemPage add = new AddItemPage(nameOfTable, nameInDB, dataBase);
+                frame.dispose();
+                AddItemPage add = null;
+                try {
+                    add = new AddItemPage(nameOfTable, nameInDB, dataBase);
+                } catch (SQLException e1) {
+                    e1.printStackTrace();
+                }
                 try {
                     add.show();
                 } catch (SQLException e1) {
                     e1.printStackTrace();
                 }
-                frame.dispose();
+
             }
 
         });
@@ -62,30 +211,39 @@ public class ShowResPage extends WindowMenu {
             ResultSet rs =  dataBase.select(query);
             int colCount = rs.getMetaData().getColumnCount();
             rs.last();
-            int lineCount = rs.getRow();
+            lineCount = rs.getRow();
             rs.beforeFirst();
-            String[] menu = new  String[colCount];
-            for (int i=0; i<menu.length; i++)
-                menu[i]=rs.getMetaData().getColumnLabel(i+1);
-            String[][] res = new String[lineCount][colCount];
 
+            //відображення списку атрибутів в бд
+            Vector menu = new Vector();
+            for (int i=1; i<=colCount; i++){
+                System.out.println(rs.getMetaData().getColumnLabel(i));
+                menu.add(rs.getMetaData().getColumnLabel(i));
+            }
+
+            //відображення інфи з бд
+            Vector res = new Vector();
+            Vector row =new Vector();
+            Vector[] help = new Vector[lineCount];
             for(int i=0; i<lineCount; i++) {
                 rs.next();
-                for (int j = 0; j < colCount; j++){
-                    System.out.print(rs.getString(j+1)+"   ");
-                    res[i][j] = rs.getString(j+1);
+                for (int j = 0; j <colCount; j++){
+                    row.add(rs.getString(j+1));
                 }
-                System.out.println("");
+                help[i]= (Vector) row.clone();
+                row.clear();
+                res.add(help[i]);
             }
             table = new JTable(res, menu);
 
-            JScrollPane scrollPane = new JScrollPane(table);
+            scrollPane = new JScrollPane(table);
             scrollPane.setLocation(x,y);
             table.setRowHeight(rowHeight);
             if(lineCount<=7)scrollPane.setSize(frame.getWidth()-70,rowHeight*lineCount+20);
             else scrollPane.setSize(frame.getWidth()-70,300);
             frame.add(scrollPane);
 
+            //кнопка видалення
             JButton deleteItem = new JButton("<html> <style type='text/css'>.plus{color: white;} </style><div class='plus'> ВИДАЛИТИ </div></html>");
             deleteItem.setSize(190, 30);
             deleteItem.setLocation( 700, 100);
@@ -93,21 +251,36 @@ public class ShowResPage extends WindowMenu {
             deleteItem.addActionListener(new ActionListener() {
                 public void actionPerformed(ActionEvent e) {
                     int itemnum = table.getSelectedRow();
-                    System.out.println(res[itemnum][0]);
-                    // table.removeRowSelectionInterval(itemnum, itemnum+1 );
-                    String q = "DELETE FROM " + nameInDB + " WHERE "+menu[0]+ " = " + res[itemnum][0]+ ";";
+
+                    r = (Vector) res.get(itemnum);
+                    System.out.println("vec  "+r);
+                    System.out.println(r.get(0));
+                    String q = "DELETE FROM " + nameInDB + " WHERE " + menu.get(0) + " = " + r.get(0) + ";";
+                    System.out.println(q);
                     try {
                         dataBase.delete(q);
                     } catch (SQLException e1) {
                         e1.printStackTrace();
                     }
-                    ShowResPage newP = new ShowResPage(nameOfTable, nameInDB, dataBase);
-                    try {
-                        newP.show();
-                    } catch (SQLException e1) {
-                        e1.printStackTrace();
+                    lineCount--;
+                    for (int i = 0; i < lineCount; i++) {
+                        v = (Vector) res.get(i);
+                        if ((String) v.firstElement() == (String) r.get(0))
+                            res.remove(i);
                     }
-                    frame.dispose();
+
+                    scrollPane.remove(table);
+                    frame.remove(scrollPane);
+                    table = new JTable(res, menu);
+                    scrollPane = new JScrollPane(table);
+                    scrollPane.setLocation(x,y);
+                    table.setRowHeight(rowHeight);
+                    if(lineCount<=7)scrollPane.setSize(frame.getWidth()-70,rowHeight*lineCount+20);
+                    else scrollPane.setSize(frame.getWidth()-70,300);
+                    frame.add(scrollPane);
+                    frame.repaint();
+                    ShowResPage newP = new ShowResPage(nameOfTable, nameInDB, dataBase);
+
                 }
             });
             frame.add(deleteItem);

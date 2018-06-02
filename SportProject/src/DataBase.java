@@ -15,8 +15,6 @@ public class DataBase {
     public DataBase() {
         try {
             this.con = DriverManager.getConnection(url, user, password);
-
-            stmt = con.createStatement();
             //stmt.executeUpdate(this.query);
             stmt = con.createStatement();
         } catch (SQLException e) {
@@ -28,14 +26,14 @@ public class DataBase {
         String query = "";
         try {
             query = "CREATE TABLE IF NOT EXISTS bank ("+
-                    "MFI_bank VARCHAR(6) NOT NULL,"+
+                    "MFI_bank INT NOT NULL,"+
                     "name_of_bank VARCHAR(150) NOT NULL,"+
                     "PRIMARY KEY (MFI_bank));";
             stmt.executeUpdate(query);
 
 
             query = "CREATE TABLE IF NOT EXISTS nomenOfDel ("+
-                    "name_of_goods CHAR(30) NOT NULL,"+
+                    "name_of_goods CHAR(70) NOT NULL,"+
                     "accountancy_account INT NOT NULL,"+
                     "order_number INT NOT NULL,"+
                     "unit CHAR(30) NOT NULL,"+
@@ -54,21 +52,95 @@ public class DataBase {
                     "PRIMARY KEY (provider_id));";
             stmt.executeUpdate(query);
 
+            query = "CREATE TABLE IF NOT EXISTS phoneNum ("+
+                    "phone_num VARCHAR(25) NOT NULL ,"+
+                    "provider_id INT NOT NULL,"+
+                    "FOREIGN KEY (provider_id) REFERENCES providers(provider_id) ON DELETE CASCADE,"+
+                    "PRIMARY KEY (phone_num));";
+            stmt.executeUpdate(query);
+
+
             query = "CREATE TABLE IF NOT EXISTS regOfStor ("+
-                    "id_of_storage MEDIUMINT NOT NULL AUTO_INCREMENT,"+
+                    "id_of_storage INT NOT NULL AUTO_INCREMENT,"+
                     "responsible_person VARCHAR(50) NOT NULL,"+
                     "address VARCHAR(50) NOT NULL,"+
                     "PRIMARY KEY (id_of_storage),"+
                     "UNIQUE(address));";
             stmt.executeUpdate(query);
 
-           // query = "CREATE TABLE IF NOT EXISTS accounts ("+
-             //       "account_id INT NOT NULL,"+
-               //     "MFI_bank INT NOT NULL,"+
-                 //   "PRIMARY KEY (account_id),"+
-                  //  "CONSTRAINT FK_MFIBank FOREIGN KEY (MFI_bank) REFERENCES bank(MFI_bank) "+
-                 //   "ON DELETE CASCADE ON UPDATE CASCADE );";
-            //stmt.executeUpdate(query);
+            query = "CREATE TABLE IF NOT EXISTS accounts ("+
+                    "account_id INT NOT NULL,"+
+                    "MFI_bank INT NOT NULL,"+
+                    "PRIMARY KEY (account_id),"+
+                    "CONSTRAINT FK_MFIBank FOREIGN KEY (MFI_bank) REFERENCES bank(MFI_bank) "+
+                    "ON DELETE CASCADE ON UPDATE CASCADE );";
+            stmt.executeUpdate(query);
+
+            query = "CREATE TABLE IF NOT EXISTS bill ("+
+                    "bill_id INT NOT NULL AUTO_INCREMENT,"+
+                    "date_of_bill DATE NOT NULL,"+
+                    "number_from_provider INT NOT NULL,"+
+                    "sum_of_bill real NOT NULL,"+
+                    "provider_id INT NOT NULL,"+
+                    "account_id INT NOT NULL,"+
+                    "PRIMARY KEY (bill_id),"+
+                    "FOREIGN KEY (provider_id) REFERENCES providers(provider_id) ON DELETE NO ACTION ON UPDATE CASCADE,"+
+                    "FOREIGN KEY (account_id) REFERENCES accounts(account_id) ON DELETE NO ACTION ON UPDATE CASCADE)CHARACTER SET utf8 COLLATE utf8_unicode_ci;";
+            stmt.executeUpdate(query);
+
+
+            query = "CREATE TABLE IF NOT EXISTS goodsOnStor(\n" +
+                    "                    goods_on_storages_id INT NOT NULL AUTO_INCREMENT,\n" +
+                    "                    name_of_goods CHAR(50) NOT NULL,\n" +
+                    "                    amount CHAR(50) NOT NULL,\n" +
+                    "                    summ REAL NOT NULL,\n" +
+                    "                    bill_id INT NOT NULL,\n" +
+                    "                    id_of_storage INT NOT NULL,\n" +
+                    "                    PRIMARY KEY (goods_on_storages_id),\n" +
+                    "                    FOREIGN KEY (bill_id) REFERENCES bill(bill_id) ON DELETE NO ACTION ON UPDATE CASCADE,\n" +
+                    "                    FOREIGN KEY (id_of_storage) REFERENCES regOfStor(id_of_storage) ON DELETE NO ACTION ON UPDATE CASCADE\n" +
+                    "            );";
+            stmt.executeUpdate(query);
+
+
+            query = "CREATE TABLE IF NOT EXISTS billDetGoods(\n" +
+                    "  id INT NOT NULL AUTO_INCREMENT,\n" +
+                    "  bill_det_id INT NOT NULL,\n" +
+                    "  goods_on_storages_id INT NOT NULL,\n" +
+                    "  PRIMARY KEY (id),\n" +
+                    "  FOREIGN KEY (bill_det_id) REFERENCES billDet(bill_det_id) ON DELETE CASCADE ON UPDATE CASCADE,\n" +
+                    "  FOREIGN KEY (goods_on_storages_id) REFERENCES goodsOnStor(goods_on_storages_id) ON DELETE CASCADE ON UPDATE CASCADE\n" +
+                    ");";
+            stmt.executeUpdate(query);
+
+            query = "CREATE TABLE IF NOT EXISTS billDet(\n" +
+                    "  bill_det_id INT NOT NULL AUTO_INCREMENT,\n" +
+                    "  name_of_goods CHAR(70) NOT NULL,\n" +
+                    "  price_per_unit INT NOT NULL,\n" +
+                    "  amount INT NOT NULL,\n" +
+                    "  sum REAL NOT NULL,\n" +
+                    "  VAT INT,\n" +
+                    "  sum_VAT REAL,\n" +
+                    "  state CHAR(30),\n" +
+                    "  bill_id INT NOT NULL,\n" +
+                    "  PRIMARY KEY (bill_det_id),\n" +
+                    "  FOREIGN KEY (name_of_goods) REFERENCES nomenOfDel(name_of_goods) ON DELETE SET NULL ON UPDATE CASCADE,\n" +
+                    "  FOREIGN KEY (bill_id) REFERENCES bill(bill_id) ON DELETE NO ACTION ON UPDATE CASCADE\n" +
+                    ");";
+            stmt.executeUpdate(query);
+
+
+            query = "CREATE TABLE IF NOT EXISTS contracts(\n" +
+                    "  contracts_id INT NOT NULL AUTO_INCREMENT,\n" +
+                    "  provider_id INT NOT NULL,\n" +
+                    "  name_of_goods CHAR(70) NOT NULL,\n" +
+                    "  date_from DATE NOT NULL,\n" +
+                    "  date_to DATE NOT NULL,\n" +
+                    "  PRIMARY KEY (contracts_id),\n" +
+                    "  FOREIGN KEY (provider_id) REFERENCES providers(provider_id) ON DELETE NO ACTION ON UPDATE CASCADE,\n" +
+                    "  FOREIGN KEY (name_of_goods) REFERENCES nomenOfDel(name_of_goods) ON DELETE NO ACTION ON UPDATE CASCADE\n" +
+                    ");";
+            stmt.executeUpdate(query);
 
         } catch (SQLException e) {
             e.printStackTrace();

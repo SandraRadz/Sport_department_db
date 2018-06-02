@@ -1,22 +1,18 @@
 import javax.swing.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
 public class WindowMenu extends Window {
-
     public WindowMenu(String nameT){
         super(nameT);
-            return;
+        return;
     }
 
     @Override
     public void show() throws SQLException {
         super.show();
-
-        JLabel name = new JLabel(this.nameOfTable);
-        name.setSize(150,30);
-        name.setLocation(frame.getWidth()/30,20);
-        frame.add(name);
 
 
         JButton profile = new JButton("ПРОФІЛЬ");

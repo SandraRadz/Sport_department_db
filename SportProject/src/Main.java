@@ -10,7 +10,9 @@ public class Main {
                 DataBase db = new DataBase();
                 db.addTables();
                 try {
-                    ShowResPage ta = new ShowResPage("Постачальники", "providers",  db);
+                    //ShowResPage ta = new ShowResPage("Постачальники", "providers",  db);
+                    ShowResPage ta = new ShowResPage("Рахунки", "accounts",  db);
+                    //ShowResPage ta = new ShowResPage("Постачальники", "providers",  db);
                     ta.show();
 
                 } catch (SQLException e) {
