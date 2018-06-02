@@ -116,18 +116,11 @@ public class AddItemPage extends WindowMenu {
                 ShowResPage main = new ShowResPage(nameOfTable, nameInDB, dataBase);
                 int size = menu.length;
                 String q ="INSERT INTO "+ nameInDB+"\n VALUES (";
-                for (int i = 0; i < size; i++) {
-                    //if empty fields exists
-                    if (arr[i].getText().isEmpty() || arr[i].getText() == null) {
-                        if (menu[i].equals("flat")) {
-                            q += "null, ";
-                        } else {
-                            errorlabel.setText("Заповніть всі поля");
-                           return;
-                        }
-                    }
-                }
                     if(nameInDB.equals("accounts")) {
+                        if(arr[0].getText().isEmpty() || arr[0].getText() == null){
+                            errorlabel.setText("Заповніть всі поля");
+                            return;
+                        }
                         if(arr[0].getText().matches("[-+]?\\d+")){
                             q += arr[0].getText() + ", ";}
                         q+=comboBox.getSelectedItem()+");";
@@ -143,13 +136,21 @@ public class AddItemPage extends WindowMenu {
                         for (int i = 0; i < size; i++) {
                             //if empty fields exists
                                 //check type of field
-                                if (types[i] == "INT" ) {
-                                    if (arr[i].getText().matches("[-+]?\\d+")) {
+                            if (arr[i].getText().isEmpty() || arr[i].getText() == null) {
+                                if (menu[i].equals("flat")) {
+                                    q += "null, ";
+                                } else {
+                                    errorlabel.setText("Заповніть всі поля");
+                                    return;
+                                }
+                            }
+                            else if (types[i] == "INT" ) {
+                                    if (arr[i].getText().matches("[-+]?\\d+") ) {
                                         q += arr[i].getText();
                                         if(i<size-1)q+=", ";
                                         else q+=");";
                                     } else {
-                                        errorlabel.setText("Здається, ви ввели некоректні значення в деякі поля");
+                                        errorlabel.setText("Здається, ви ввели некоректні значення в деякі поля ("+arr[i]+")");
                                         arr[i].setText(null);
                                         return;
                                     }

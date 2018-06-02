@@ -26,11 +26,11 @@
   </component>
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-      <file leaf-file-name="AddItemPage.java" pinned="false" current-in-tab="false">
+      <file leaf-file-name="AddItemPage.java" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/src/AddItemPage.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="-748">
-              <caret line="132" column="59" selection-start-line="132" selection-start-column="59" selection-end-line="132" selection-end-column="59" />
+            <state relative-caret-position="146">
+              <caret line="134" column="26" lean-forward="true" selection-start-line="134" selection-start-column="26" selection-end-line="134" selection-end-column="26" />
               <folding>
                 <element signature="imports" expanded="true" />
               </folding>
@@ -38,10 +38,10 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="DataBase.java" pinned="false" current-in-tab="true">
+      <file leaf-file-name="DataBase.java" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/DataBase.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="174">
+            <state relative-caret-position="-489">
               <caret line="113" column="49" lean-forward="true" selection-start-line="113" selection-start-column="49" selection-end-line="113" selection-end-column="49" />
             </state>
           </provider>
@@ -93,9 +93,9 @@
         <option value="$PROJECT_DIR$/src/Main.java" />
         <option value="$PROJECT_DIR$/src/WindowMenu.java" />
         <option value="$PROJECT_DIR$/src/ShowResPage.java" />
-        <option value="$PROJECT_DIR$/src/AddItemPage.java" />
         <option value="$APPLICATION_CONFIG_DIR$/consoles/db/bf55dbf4-d45a-4f2a-be59-d5ba3de4301e/console.sql" />
         <option value="$PROJECT_DIR$/src/DataBase.java" />
+        <option value="$PROJECT_DIR$/src/AddItemPage.java" />
       </list>
     </option>
   </component>
@@ -257,12 +257,12 @@
       <workItem from="1527766674919" duration="466000" />
       <workItem from="1527767198092" duration="2828000" />
       <workItem from="1527908342860" duration="20184000" />
-      <workItem from="1527970305478" duration="252000" />
+      <workItem from="1527970305478" duration="2096000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="100685000" />
+    <option name="totallyTimeSpent" value="102529000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="-8" y="-8" width="1382" height="744" extended-state="6" />
@@ -274,10 +274,10 @@
       <window_info anchor="right" id="Palette&#9;" order="8" />
       <window_info id="Image Layers" order="2" />
       <window_info anchor="right" id="Capture Analysis" order="4" />
-      <window_info anchor="bottom" id="Event Log" order="10" sideWeight="0.16617863" side_tool="true" visible="true" weight="0.4165342" />
+      <window_info anchor="bottom" id="Event Log" order="10" sideWeight="0.16617863" side_tool="true" visible="true" weight="0.096979335" />
       <window_info anchor="right" id="Maven Projects" order="7" />
       <window_info anchor="bottom" id="Database Changes" order="8" show_stripe_button="false" />
-      <window_info active="true" anchor="bottom" id="Run" order="3" sideWeight="0.83382136" visible="true" weight="0.4165342" />
+      <window_info active="true" anchor="bottom" id="Run" order="3" sideWeight="0.83382136" visible="true" weight="0.096979335" />
       <window_info anchor="bottom" id="Version Control" order="11" show_stripe_button="false" />
       <window_info anchor="bottom" id="Terminal" order="9" />
       <window_info id="Capture Tool" order="6" />
@@ -704,20 +704,20 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/AddItemPage.java">
+    <entry file="file://$PROJECT_DIR$/src/DataBase.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-748">
-          <caret line="132" column="59" selection-start-line="132" selection-start-column="59" selection-end-line="132" selection-end-column="59" />
-          <folding>
-            <element signature="imports" expanded="true" />
-          </folding>
+        <state relative-caret-position="-489">
+          <caret line="113" column="49" lean-forward="true" selection-start-line="113" selection-start-column="49" selection-end-line="113" selection-end-column="49" />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/DataBase.java">
+    <entry file="file://$PROJECT_DIR$/src/AddItemPage.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="174">
-          <caret line="113" column="49" lean-forward="true" selection-start-line="113" selection-start-column="49" selection-end-line="113" selection-end-column="49" />
+        <state relative-caret-position="146">
+          <caret line="134" column="26" lean-forward="true" selection-start-line="134" selection-start-column="26" selection-end-line="134" selection-end-column="26" />
+          <folding>
+            <element signature="imports" expanded="true" />
+          </folding>
         </state>
       </provider>
     </entry>
