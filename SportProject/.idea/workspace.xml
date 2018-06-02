@@ -26,16 +26,23 @@
   </component>
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-      <file leaf-file-name="AddItemPage.java" pinned="false" current-in-tab="true">
+      <file leaf-file-name="AddItemPage.java" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/AddItemPage.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="352">
-              <caret line="136" column="89" lean-forward="true" selection-start-line="136" selection-start-column="89" selection-end-line="136" selection-end-column="89" />
+            <state relative-caret-position="-748">
+              <caret line="132" column="59" selection-start-line="132" selection-start-column="59" selection-end-line="132" selection-end-column="59" />
               <folding>
                 <element signature="imports" expanded="true" />
-                <element signature="e#1119#1120#0" expanded="true" />
-                <element signature="e#1143#1144#0" expanded="true" />
               </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="DataBase.java" pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/src/DataBase.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="174">
+              <caret line="113" column="49" lean-forward="true" selection-start-line="113" selection-start-column="49" selection-end-line="113" selection-end-column="49" />
             </state>
           </provider>
         </entry>
@@ -43,8 +50,8 @@
       <file leaf-file-name="console.sql" pinned="false" current-in-tab="false">
         <entry file="file://$APPLICATION_CONFIG_DIR$/consoles/db/bf55dbf4-d45a-4f2a-be59-d5ba3de4301e/console.sql">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="247">
-              <caret line="102" column="24" lean-forward="true" selection-start-line="102" selection-start-column="24" selection-end-line="102" selection-end-column="24" />
+            <state relative-caret-position="228">
+              <caret line="27" column="22" selection-start-line="27" selection-start-column="22" selection-end-line="27" selection-end-column="35" />
             </state>
           </provider>
         </entry>
@@ -68,9 +75,10 @@
       <find>error</find>
       <find>nomenOfDel</find>
       <find>stor</find>
-      <find>arr</find>
       <find>first</find>
       <find>cont</find>
+      <find>arr</find>
+      <find>name_of_goods</find>
     </findStrings>
   </component>
   <component name="IdeDocumentHistory">
@@ -84,10 +92,10 @@
         <option value="$PROJECT_DIR$/src/Window.java" />
         <option value="$PROJECT_DIR$/src/Main.java" />
         <option value="$PROJECT_DIR$/src/WindowMenu.java" />
-        <option value="$PROJECT_DIR$/src/AddItemPage.java" />
         <option value="$PROJECT_DIR$/src/ShowResPage.java" />
-        <option value="$PROJECT_DIR$/src/DataBase.java" />
+        <option value="$PROJECT_DIR$/src/AddItemPage.java" />
         <option value="$APPLICATION_CONFIG_DIR$/consoles/db/bf55dbf4-d45a-4f2a-be59-d5ba3de4301e/console.sql" />
+        <option value="$PROJECT_DIR$/src/DataBase.java" />
       </list>
     </option>
   </component>
@@ -100,7 +108,7 @@
   <component name="NodePackageJsonFileManager">
     <packageJsonPaths />
   </component>
-  <component name="ProjectFrameBounds" extendedState="7">
+  <component name="ProjectFrameBounds" extendedState="6">
     <option name="x" value="-7" />
     <option name="width" value="697" />
     <option name="height" value="735" />
@@ -110,8 +118,6 @@
       <foldersAlwaysOnTop value="true" />
     </navigator>
     <panes>
-      <pane id="Scope" />
-      <pane id="PackagesPane" />
       <pane id="ProjectPane">
         <subPane>
           <expand>
@@ -143,7 +149,9 @@
           <select />
         </subPane>
       </pane>
+      <pane id="PackagesPane" />
       <pane id="AndroidView" />
+      <pane id="Scope" />
     </panes>
   </component>
   <component name="PropertiesComponent">
@@ -151,7 +159,7 @@
     <property name="aspect.path.notification.shown" value="true" />
     <property name="com.intellij.database.dataSource.DataSourceTemplate" value="MySQL" />
     <property name="com.intellij.ide.scratch.LRUPopupBuilder$1/Change SQL Dialect" value="MySQL" />
-    <property name="database.console.LAST_STATE" value="false" />
+    <property name="database.console.LAST_STATE" value="true" />
     <property name="last_opened_file_path" value="$PROJECT_DIR$" />
     <property name="nodejs_interpreter_path.stuck_in_default_project" value="undefined stuck path" />
     <property name="nodejs_npm_path_reset_for_default_project" value="true" />
@@ -248,12 +256,13 @@
       <workItem from="1527753040551" duration="4123000" />
       <workItem from="1527766674919" duration="466000" />
       <workItem from="1527767198092" duration="2828000" />
-      <workItem from="1527908342860" duration="16449000" />
+      <workItem from="1527908342860" duration="20184000" />
+      <workItem from="1527970305478" duration="252000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="96698000" />
+    <option name="totallyTimeSpent" value="100685000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="-8" y="-8" width="1382" height="744" extended-state="6" />
@@ -265,48 +274,48 @@
       <window_info anchor="right" id="Palette&#9;" order="8" />
       <window_info id="Image Layers" order="2" />
       <window_info anchor="right" id="Capture Analysis" order="4" />
-      <window_info anchor="bottom" id="Event Log" order="10" sideWeight="0.16178624" side_tool="true" visible="true" weight="0.13513513" />
+      <window_info anchor="bottom" id="Event Log" order="10" sideWeight="0.16617863" side_tool="true" visible="true" weight="0.4165342" />
       <window_info anchor="right" id="Maven Projects" order="7" />
       <window_info anchor="bottom" id="Database Changes" order="8" show_stripe_button="false" />
+      <window_info active="true" anchor="bottom" id="Run" order="3" sideWeight="0.83382136" visible="true" weight="0.4165342" />
       <window_info anchor="bottom" id="Version Control" order="11" show_stripe_button="false" />
-      <window_info active="true" anchor="bottom" id="Run" order="3" sideWeight="0.83821374" visible="true" weight="0.13513513" />
       <window_info anchor="bottom" id="Terminal" order="9" />
       <window_info id="Capture Tool" order="6" />
-      <window_info anchor="bottom" id="Database Console" order="0" sideWeight="0.8389458" weight="0.45786965" />
       <window_info id="Designer" order="3" />
-      <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.20497803" />
+      <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.18448023" />
       <window_info anchor="right" id="Database" order="6" weight="0.0029282577" />
       <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
       <window_info anchor="right" id="Ant Build" order="1" weight="0.25" />
       <window_info id="UI Designer" order="4" />
       <window_info anchor="right" id="Theme Preview" order="5" />
-      <window_info id="Favorites" order="5" side_tool="true" />
       <window_info anchor="bottom" id="Debug" order="4" weight="0.4" />
+      <window_info id="Favorites" order="5" side_tool="true" />
       <window_info anchor="right" content_ui="combo" id="Hierarchy" order="2" weight="0.25" />
       <window_info anchor="bottom" id="Inspection" order="6" weight="0.4" />
       <window_info anchor="right" id="Commander" internal_type="SLIDING" order="0" type="SLIDING" weight="0.4" />
       <window_info anchor="bottom" id="Message" order="1" />
       <window_info anchor="bottom" id="Cvs" order="5" weight="0.25" />
+      <window_info active="true" anchor="bottom" id="Database Console" order="0" sideWeight="0.8345534" visible="true" weight="0.096979335" />
       <window_info anchor="bottom" id="Find" order="2" weight="0.32913387" />
     </layout>
     <layout-to-restore>
       <window_info anchor="right" id="Palette" order="3" />
+      <window_info anchor="bottom" id="Event Log" order="10" sideWeight="0.103953145" side_tool="true" visible="true" weight="0.33228347" />
       <window_info active="true" anchor="bottom" id="Database Console" order="0" sideWeight="0.8960469" visible="true" weight="0.33228347" />
       <window_info anchor="right" id="Capture Analysis" order="4" />
       <window_info anchor="bottom" id="Version Control" order="11" show_stripe_button="false" />
       <window_info anchor="right" id="Theme Preview" order="5" />
-      <window_info anchor="bottom" id="Messages" order="12" sideWeight="0.4978038" weight="0.32913387" />
-      <window_info anchor="right" id="Ant Build" order="1" weight="0.25" />
+      <window_info anchor="bottom" id="Message" order="1" />
+      <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.1749634" />
       <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
       <window_info anchor="right" id="Commander" internal_type="SLIDING" order="0" type="SLIDING" weight="0.4" />
+      <window_info anchor="right" id="Ant Build" order="1" weight="0.25" />
       <window_info anchor="bottom" id="TODO" order="7" />
-      <window_info anchor="bottom" id="Database Changes" order="8" show_stripe_button="false" />
-      <window_info id="Favorites" order="5" side_tool="true" />
       <window_info anchor="bottom" id="Run" order="3" sideWeight="0.8931186" weight="0.11338583" />
       <window_info id="Image Layers" order="2" />
       <window_info id="Designer" order="3" />
       <window_info id="UI Designer" order="4" />
-      <window_info anchor="bottom" id="Find" order="2" weight="0.32913387" />
+      <window_info anchor="bottom" id="Database Changes" order="8" show_stripe_button="false" />
       <window_info anchor="right" id="Database" order="6" weight="0.0029282577" />
       <window_info anchor="right" id="Palette&#9;" order="8" />
       <window_info anchor="bottom" id="Terminal" order="9" />
@@ -315,10 +324,10 @@
       <window_info anchor="bottom" id="Cvs" order="5" weight="0.25" />
       <window_info anchor="right" content_ui="combo" id="Hierarchy" order="2" weight="0.25" />
       <window_info id="Capture Tool" order="6" />
-      <window_info anchor="bottom" id="Message" order="1" />
-      <window_info anchor="bottom" id="Event Log" order="10" sideWeight="0.103953145" side_tool="true" visible="true" weight="0.33228347" />
+      <window_info anchor="bottom" id="Find" order="2" weight="0.32913387" />
+      <window_info anchor="bottom" id="Messages" order="12" sideWeight="0.4978038" weight="0.32913387" />
       <window_info anchor="right" id="Maven Projects" order="7" />
-      <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.1749634" />
+      <window_info id="Favorites" order="5" side_tool="true" />
     </layout-to-restore>
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -356,8 +365,6 @@
           <caret line="63" column="24" lean-forward="true" selection-start-line="63" selection-start-column="24" selection-end-line="63" selection-end-column="24" />
           <folding>
             <element signature="imports" expanded="true" />
-            <element signature="e#1119#1120#0" expanded="true" />
-            <element signature="e#1143#1144#0" expanded="true" />
           </folding>
         </state>
       </provider>
@@ -660,13 +667,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$APPLICATION_CONFIG_DIR$/consoles/db/bf55dbf4-d45a-4f2a-be59-d5ba3de4301e/console.sql">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="247">
-          <caret line="102" column="24" lean-forward="true" selection-start-line="102" selection-start-column="24" selection-end-line="102" selection-end-column="24" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/WindowMenu.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="-34">
@@ -697,22 +697,27 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/DataBase.java">
+    <entry file="file://$APPLICATION_CONFIG_DIR$/consoles/db/bf55dbf4-d45a-4f2a-be59-d5ba3de4301e/console.sql">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="49">
-          <caret line="126" column="68" lean-forward="true" selection-start-line="126" selection-start-column="68" selection-end-line="126" selection-end-column="69" />
+        <state relative-caret-position="228">
+          <caret line="27" column="22" selection-start-line="27" selection-start-column="22" selection-end-line="27" selection-end-column="35" />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/AddItemPage.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="352">
-          <caret line="136" column="89" lean-forward="true" selection-start-line="136" selection-start-column="89" selection-end-line="136" selection-end-column="89" />
+        <state relative-caret-position="-748">
+          <caret line="132" column="59" selection-start-line="132" selection-start-column="59" selection-end-line="132" selection-end-column="59" />
           <folding>
             <element signature="imports" expanded="true" />
-            <element signature="e#1119#1120#0" expanded="true" />
-            <element signature="e#1143#1144#0" expanded="true" />
           </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/DataBase.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="174">
+          <caret line="113" column="49" lean-forward="true" selection-start-line="113" selection-start-column="49" selection-end-line="113" selection-end-column="49" />
         </state>
       </provider>
     </entry>

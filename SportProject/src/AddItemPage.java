@@ -114,36 +114,34 @@ public class AddItemPage extends WindowMenu {
         saveItem.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 ShowResPage main = new ShowResPage(nameOfTable, nameInDB, dataBase);
-                boolean all =true;
                 int size = menu.length;
                 String q ="INSERT INTO "+ nameInDB+"\n VALUES (";
-
+                for (int i = 0; i < size; i++) {
+                    //if empty fields exists
+                    if (arr[i].getText().isEmpty() || arr[i].getText() == null) {
+                        if (menu[i].equals("flat")) {
+                            q += "null, ";
+                        } else {
+                            errorlabel.setText("Заповніть всі поля");
+                           return;
+                        }
+                    }
+                }
                     if(nameInDB.equals("accounts")) {
                         if(arr[0].getText().matches("[-+]?\\d+")){
                             q += arr[0].getText() + ", ";}
                         q+=comboBox.getSelectedItem()+");";
-                        if(arr[0].getText().isEmpty()) {
-                            errorlabel.setText("Заповніть всі поля");
-                            all=false;
-                        }
                     }
                     else if(nameInDB.equals("contracts")) {
+                        if(arr[0].getText().matches("[-+]?\\d+")){
+                            q += arr[0].getText() + ", ";}
+                        q+=comboBox.getSelectedItem()+");";
 
 
                     }
                     else {
                         for (int i = 0; i < size; i++) {
                             //if empty fields exists
-                            if (arr[i].getText().isEmpty() || arr[i].getText() == null) {
-                                if (menu[i].equals("flat")){
-                                    q += "null, ";
-                                }
-                                else {
-                                    errorlabel.setText("Заповніть всі поля");
-                                    all = false;
-                                }
-                            }
-                            else {
                                 //check type of field
                                 if (types[i] == "INT" ) {
                                     if (arr[i].getText().matches("[-+]?\\d+")) {
@@ -153,7 +151,7 @@ public class AddItemPage extends WindowMenu {
                                     } else {
                                         errorlabel.setText("Здається, ви ввели некоректні значення в деякі поля");
                                         arr[i].setText(null);
-                                        all=false;
+                                        return;
                                     }
                                 } else {
                                     q += "'" + arr[i].getText();
@@ -161,16 +159,13 @@ public class AddItemPage extends WindowMenu {
                                     else q+="');";
                                 }
                             }
-                        }
                     }
                 System.out.println(q);
                     //create new item if no empty fields
                 try {
-                    if(all) {
                         dataBase.add(q);
                         main.show();
                         frame.dispose();
-                    }
                 } catch (SQLException e1) {
                     e1.printStackTrace();
                 }

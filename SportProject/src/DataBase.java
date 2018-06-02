@@ -26,7 +26,7 @@ public class DataBase {
         String query = "";
         try {
             query = "CREATE TABLE IF NOT EXISTS bank ("+
-                    "MFI_bank INT NOT NULL,"+
+                    "MFI_bank VARCHAR(6) NOT NULL,"+
                     "name_of_bank VARCHAR(150) NOT NULL,"+
                     "PRIMARY KEY (MFI_bank));";
             stmt.executeUpdate(query);
@@ -42,7 +42,7 @@ public class DataBase {
 
 
             query = "CREATE TABLE IF NOT EXISTS providers ("+
-                    "provider_id INT NOT NULL ,"+
+                    "provider_id VARCHAR(12) NOT NULL ,"+
                     "name_of_provider VARCHAR(255) NOT NULL,"+
                     "city VARCHAR(255) NOT NULL,"+
                     "street VARCHAR(255) NOT NULL,"+
@@ -54,7 +54,7 @@ public class DataBase {
 
             query = "CREATE TABLE IF NOT EXISTS phoneNum ("+
                     "phone_num VARCHAR(25) NOT NULL ,"+
-                    "provider_id INT NOT NULL,"+
+                    "provider_id VARCHAR(12) NOT NULL,"+
                     "FOREIGN KEY (provider_id) REFERENCES providers(provider_id) ON DELETE CASCADE,"+
                     "PRIMARY KEY (phone_num));";
             stmt.executeUpdate(query);
@@ -69,8 +69,8 @@ public class DataBase {
             stmt.executeUpdate(query);
 
             query = "CREATE TABLE IF NOT EXISTS accounts ("+
-                    "account_id INT NOT NULL,"+
-                    "MFI_bank INT NOT NULL,"+
+                    "account_id VARCHAR(16) NOT NULL,"+
+                    "MFI_bank VARCHAR(6) NOT NULL,"+
                     "PRIMARY KEY (account_id),"+
                     "CONSTRAINT FK_MFIBank FOREIGN KEY (MFI_bank) REFERENCES bank(MFI_bank) "+
                     "ON DELETE CASCADE ON UPDATE CASCADE );";
@@ -79,13 +79,13 @@ public class DataBase {
             query = "CREATE TABLE IF NOT EXISTS bill ("+
                     "bill_id INT NOT NULL AUTO_INCREMENT,"+
                     "date_of_bill DATE NOT NULL,"+
-                    "number_from_provider INT NOT NULL,"+
+                    "number_from_provider VARCHAR(12) NOT NULL,"+
                     "sum_of_bill real NOT NULL,"+
-                    "provider_id INT NOT NULL,"+
-                    "account_id INT NOT NULL,"+
+                    "provider_id VARCHAR(12) NOT NULL,"+
+                    "account_id VARCHAR(16) NOT NULL,"+
                     "PRIMARY KEY (bill_id),"+
                     "FOREIGN KEY (provider_id) REFERENCES providers(provider_id) ON DELETE NO ACTION ON UPDATE CASCADE,"+
-                    "FOREIGN KEY (account_id) REFERENCES accounts(account_id) ON DELETE NO ACTION ON UPDATE CASCADE)CHARACTER SET utf8 COLLATE utf8_unicode_ci;";
+                    "FOREIGN KEY (account_id) REFERENCES accounts(account_id) ON DELETE NO ACTION ON UPDATE CASCADE);";
             stmt.executeUpdate(query);
 
 
@@ -102,6 +102,21 @@ public class DataBase {
                     "            );";
             stmt.executeUpdate(query);
 
+            query = "CREATE TABLE IF NOT EXISTS billDet(\n" +
+                    "  bill_det_id INT NOT NULL AUTO_INCREMENT,\n" +
+                    "  name_of_goods CHAR(70) NOT NULL,\n" +
+                    "  price_per_unit REAL NOT NULL,\n" +
+                    "  amount INT NOT NULL,\n" +
+                    "  summ REAL NOT NULL,\n" +
+                    "  VAT REAL,\n" +
+                    "  sum_VAT REAL,\n" +
+                    "  state CHAR(30),\n" +
+                    "  bill_id INT NOT NULL,\n" +
+                    "  PRIMARY KEY (bill_det_id),\n" +
+                    "  FOREIGN KEY (name_of_goods) REFERENCES nomenOfDel(name_of_goods) ON DELETE NO ACTION ON UPDATE CASCADE,\n" +
+                    "  FOREIGN KEY (bill_id) REFERENCES bill(bill_id) ON DELETE NO ACTION ON UPDATE CASCADE\n" +
+                    ");";
+            stmt.executeUpdate(query);
 
             query = "CREATE TABLE IF NOT EXISTS billDetGoods(\n" +
                     "  id INT NOT NULL AUTO_INCREMENT,\n" +
@@ -113,26 +128,9 @@ public class DataBase {
                     ");";
             stmt.executeUpdate(query);
 
-            query = "CREATE TABLE IF NOT EXISTS billDet(\n" +
-                    "  bill_det_id INT NOT NULL AUTO_INCREMENT,\n" +
-                    "  name_of_goods CHAR(70) NOT NULL,\n" +
-                    "  price_per_unit INT NOT NULL,\n" +
-                    "  amount INT NOT NULL,\n" +
-                    "  sum REAL NOT NULL,\n" +
-                    "  VAT INT,\n" +
-                    "  sum_VAT REAL,\n" +
-                    "  state CHAR(30),\n" +
-                    "  bill_id INT NOT NULL,\n" +
-                    "  PRIMARY KEY (bill_det_id),\n" +
-                    "  FOREIGN KEY (name_of_goods) REFERENCES nomenOfDel(name_of_goods) ON DELETE SET NULL ON UPDATE CASCADE,\n" +
-                    "  FOREIGN KEY (bill_id) REFERENCES bill(bill_id) ON DELETE NO ACTION ON UPDATE CASCADE\n" +
-                    ");";
-            stmt.executeUpdate(query);
-
-
             query = "CREATE TABLE IF NOT EXISTS contracts(\n" +
                     "  contracts_id INT NOT NULL AUTO_INCREMENT,\n" +
-                    "  provider_id INT NOT NULL,\n" +
+                    "  provider_id VARCHAR(12) NOT NULL,\n" +
                     "  name_of_goods CHAR(70) NOT NULL,\n" +
                     "  date_from DATE NOT NULL,\n" +
                     "  date_to DATE NOT NULL,\n" +

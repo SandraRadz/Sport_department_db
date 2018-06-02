@@ -920,37 +920,34 @@
     </collation>
     <table id="231" parent="6" name="accounts"/>
     <table id="232" parent="6" name="bank"/>
-    <table id="233" parent="6" name="bill">
-      <Collation>utf8_unicode_ci</Collation>
-    </table>
-    <table id="234" parent="6" name="contracts"/>
-    <table id="235" parent="6" name="goodsonstor"/>
-    <table id="236" parent="6" name="nomenofdel"/>
-    <table id="237" parent="6" name="phonenum"/>
-    <table id="238" parent="6" name="providers"/>
-    <table id="239" parent="6" name="regofstor"/>
-    <column id="240" parent="231" name="account_id">
+    <table id="233" parent="6" name="bill"/>
+    <table id="234" parent="6" name="goodsonstor"/>
+    <table id="235" parent="6" name="nomenofdel"/>
+    <table id="236" parent="6" name="phonenum"/>
+    <table id="237" parent="6" name="providers"/>
+    <table id="238" parent="6" name="regofstor"/>
+    <column id="239" parent="231" name="account_id">
       <Position>1</Position>
-      <DataType>int(11)|0s</DataType>
+      <DataType>varchar(16)|0s</DataType>
       <NotNull>1</NotNull>
       <ColumnKind>normal</ColumnKind>
     </column>
-    <column id="241" parent="231" name="MFI_bank">
+    <column id="240" parent="231" name="MFI_bank">
       <Position>2</Position>
-      <DataType>int(11)|0s</DataType>
+      <DataType>varchar(6)|0s</DataType>
       <NotNull>1</NotNull>
       <ColumnKind>normal</ColumnKind>
     </column>
-    <index id="242" parent="231" name="FK_MFIBank">
+    <index id="241" parent="231" name="FK_MFIBank">
       <ColNames>MFI_bank</ColNames>
       <Type>btree</Type>
     </index>
-    <key id="243" parent="231" name="PRIMARY">
+    <key id="242" parent="231" name="PRIMARY">
       <NameSurrogate>1</NameSurrogate>
       <ColNames>account_id</ColNames>
       <Primary>1</Primary>
     </key>
-    <foreign-key id="244" parent="231" name="FK_MFIBank">
+    <foreign-key id="243" parent="231" name="FK_MFIBank">
       <ColNames>MFI_bank</ColNames>
       <RefSchemaName>sport_department</RefSchemaName>
       <RefTableName>bank</RefTableName>
@@ -958,342 +955,284 @@
       <OnUpdate>cascade</OnUpdate>
       <OnDelete>cascade</OnDelete>
     </foreign-key>
-    <column id="245" parent="232" name="MFI_bank">
+    <column id="244" parent="232" name="MFI_bank">
       <Position>1</Position>
-      <DataType>int(11)|0s</DataType>
+      <DataType>varchar(6)|0s</DataType>
       <NotNull>1</NotNull>
       <ColumnKind>normal</ColumnKind>
     </column>
-    <column id="246" parent="232" name="name_of_bank">
+    <column id="245" parent="232" name="name_of_bank">
       <Position>2</Position>
       <DataType>varchar(150)|0s</DataType>
       <NotNull>1</NotNull>
       <ColumnKind>normal</ColumnKind>
     </column>
-    <key id="247" parent="232" name="PRIMARY">
+    <key id="246" parent="232" name="PRIMARY">
       <NameSurrogate>1</NameSurrogate>
       <ColNames>MFI_bank</ColNames>
       <Primary>1</Primary>
     </key>
-    <column id="248" parent="233" name="bill_id">
+    <column id="247" parent="233" name="bill_id">
       <Position>1</Position>
       <DataType>int(11)|0s</DataType>
       <NotNull>1</NotNull>
       <SequenceIdentity>1</SequenceIdentity>
       <ColumnKind>normal</ColumnKind>
     </column>
-    <column id="249" parent="233" name="date_of_bill">
+    <column id="248" parent="233" name="date_of_bill">
       <Position>2</Position>
       <DataType>date|0s</DataType>
       <NotNull>1</NotNull>
       <ColumnKind>normal</ColumnKind>
     </column>
-    <column id="250" parent="233" name="number_from_provider">
+    <column id="249" parent="233" name="number_from_provider">
       <Position>3</Position>
-      <DataType>int(11)|0s</DataType>
+      <DataType>varchar(12)|0s</DataType>
       <NotNull>1</NotNull>
       <ColumnKind>normal</ColumnKind>
     </column>
-    <column id="251" parent="233" name="sum_of_bill">
+    <column id="250" parent="233" name="sum_of_bill">
       <Position>4</Position>
       <DataType>double|0s</DataType>
       <NotNull>1</NotNull>
       <ColumnKind>normal</ColumnKind>
     </column>
-    <column id="252" parent="233" name="provider_id">
+    <column id="251" parent="233" name="provider_id">
       <Position>5</Position>
-      <DataType>int(11)|0s</DataType>
+      <DataType>varchar(12)|0s</DataType>
       <NotNull>1</NotNull>
       <ColumnKind>normal</ColumnKind>
     </column>
-    <column id="253" parent="233" name="account_id">
+    <column id="252" parent="233" name="account_id">
       <Position>6</Position>
-      <DataType>int(11)|0s</DataType>
+      <DataType>varchar(16)|0s</DataType>
       <NotNull>1</NotNull>
       <ColumnKind>normal</ColumnKind>
     </column>
-    <index id="254" parent="233" name="provider_id">
+    <index id="253" parent="233" name="provider_id">
       <ColNames>provider_id</ColNames>
       <Type>btree</Type>
     </index>
-    <index id="255" parent="233" name="account_id">
+    <index id="254" parent="233" name="account_id">
       <ColNames>account_id</ColNames>
       <Type>btree</Type>
     </index>
-    <key id="256" parent="233" name="PRIMARY">
+    <key id="255" parent="233" name="PRIMARY">
       <NameSurrogate>1</NameSurrogate>
       <ColNames>bill_id</ColNames>
       <Primary>1</Primary>
     </key>
-    <foreign-key id="257" parent="233" name="bill_ibfk_1">
+    <foreign-key id="256" parent="233" name="bill_ibfk_1">
       <ColNames>provider_id</ColNames>
       <RefSchemaName>sport_department</RefSchemaName>
       <RefTableName>providers</RefTableName>
       <RefColNames>provider_id</RefColNames>
       <OnUpdate>cascade</OnUpdate>
     </foreign-key>
-    <foreign-key id="258" parent="233" name="bill_ibfk_2">
+    <foreign-key id="257" parent="233" name="bill_ibfk_2">
       <ColNames>account_id</ColNames>
       <RefSchemaName>sport_department</RefSchemaName>
       <RefTableName>accounts</RefTableName>
       <RefColNames>account_id</RefColNames>
       <OnUpdate>cascade</OnUpdate>
     </foreign-key>
-    <column id="259" parent="234" name="contracts_id">
+    <column id="258" parent="234" name="goods_on_storages_id">
       <Position>1</Position>
       <DataType>int(11)|0s</DataType>
       <NotNull>1</NotNull>
       <SequenceIdentity>1</SequenceIdentity>
       <ColumnKind>normal</ColumnKind>
     </column>
-    <column id="260" parent="234" name="provider_id">
-      <Position>2</Position>
-      <DataType>int(11)|0s</DataType>
-      <NotNull>1</NotNull>
-      <ColumnKind>normal</ColumnKind>
-    </column>
-    <column id="261" parent="234" name="name_of_goods">
-      <Position>3</Position>
-      <DataType>char(70)|0s</DataType>
-      <NotNull>1</NotNull>
-      <ColumnKind>normal</ColumnKind>
-    </column>
-    <column id="262" parent="234" name="date_from">
-      <Position>4</Position>
-      <DataType>date|0s</DataType>
-      <NotNull>1</NotNull>
-      <ColumnKind>normal</ColumnKind>
-    </column>
-    <column id="263" parent="234" name="date_to">
-      <Position>5</Position>
-      <DataType>date|0s</DataType>
-      <NotNull>1</NotNull>
-      <ColumnKind>normal</ColumnKind>
-    </column>
-    <index id="264" parent="234" name="provider_id">
-      <ColNames>provider_id</ColNames>
-      <Type>btree</Type>
-    </index>
-    <index id="265" parent="234" name="name_of_goods">
-      <ColNames>name_of_goods</ColNames>
-      <Type>btree</Type>
-    </index>
-    <key id="266" parent="234" name="PRIMARY">
-      <NameSurrogate>1</NameSurrogate>
-      <ColNames>contracts_id</ColNames>
-      <Primary>1</Primary>
-    </key>
-    <foreign-key id="267" parent="234" name="contracts_ibfk_1">
-      <ColNames>provider_id</ColNames>
-      <RefSchemaName>sport_department</RefSchemaName>
-      <RefTableName>providers</RefTableName>
-      <RefColNames>provider_id</RefColNames>
-      <OnUpdate>cascade</OnUpdate>
-    </foreign-key>
-    <foreign-key id="268" parent="234" name="contracts_ibfk_2">
-      <ColNames>name_of_goods</ColNames>
-      <RefSchemaName>sport_department</RefSchemaName>
-      <RefTableName>nomenofdel</RefTableName>
-      <RefColNames>name_of_goods</RefColNames>
-      <OnUpdate>cascade</OnUpdate>
-    </foreign-key>
-    <column id="269" parent="235" name="goods_on_storages_id">
-      <Position>1</Position>
-      <DataType>int(11)|0s</DataType>
-      <NotNull>1</NotNull>
-      <SequenceIdentity>1</SequenceIdentity>
-      <ColumnKind>normal</ColumnKind>
-    </column>
-    <column id="270" parent="235" name="name_of_goods">
+    <column id="259" parent="234" name="name_of_goods">
       <Position>2</Position>
       <DataType>char(50)|0s</DataType>
       <NotNull>1</NotNull>
       <ColumnKind>normal</ColumnKind>
     </column>
-    <column id="271" parent="235" name="amount">
+    <column id="260" parent="234" name="amount">
       <Position>3</Position>
       <DataType>char(50)|0s</DataType>
       <NotNull>1</NotNull>
       <ColumnKind>normal</ColumnKind>
     </column>
-    <column id="272" parent="235" name="summ">
+    <column id="261" parent="234" name="summ">
       <Position>4</Position>
       <DataType>double|0s</DataType>
       <NotNull>1</NotNull>
       <ColumnKind>normal</ColumnKind>
     </column>
-    <column id="273" parent="235" name="bill_id">
+    <column id="262" parent="234" name="bill_id">
       <Position>5</Position>
       <DataType>int(11)|0s</DataType>
       <NotNull>1</NotNull>
       <ColumnKind>normal</ColumnKind>
     </column>
-    <column id="274" parent="235" name="id_of_storage">
+    <column id="263" parent="234" name="id_of_storage">
       <Position>6</Position>
       <DataType>int(11)|0s</DataType>
       <NotNull>1</NotNull>
       <ColumnKind>normal</ColumnKind>
     </column>
-    <index id="275" parent="235" name="bill_id">
+    <index id="264" parent="234" name="bill_id">
       <ColNames>bill_id</ColNames>
       <Type>btree</Type>
     </index>
-    <index id="276" parent="235" name="id_of_storage">
+    <index id="265" parent="234" name="id_of_storage">
       <ColNames>id_of_storage</ColNames>
       <Type>btree</Type>
     </index>
-    <key id="277" parent="235" name="PRIMARY">
+    <key id="266" parent="234" name="PRIMARY">
       <NameSurrogate>1</NameSurrogate>
       <ColNames>goods_on_storages_id</ColNames>
       <Primary>1</Primary>
     </key>
-    <foreign-key id="278" parent="235" name="goodsonstor_ibfk_1">
+    <foreign-key id="267" parent="234" name="goodsonstor_ibfk_1">
       <ColNames>bill_id</ColNames>
       <RefSchemaName>sport_department</RefSchemaName>
       <RefTableName>bill</RefTableName>
       <RefColNames>bill_id</RefColNames>
       <OnUpdate>cascade</OnUpdate>
     </foreign-key>
-    <foreign-key id="279" parent="235" name="goodsonstor_ibfk_2">
+    <foreign-key id="268" parent="234" name="goodsonstor_ibfk_2">
       <ColNames>id_of_storage</ColNames>
       <RefSchemaName>sport_department</RefSchemaName>
       <RefTableName>regofstor</RefTableName>
       <RefColNames>id_of_storage</RefColNames>
       <OnUpdate>cascade</OnUpdate>
     </foreign-key>
-    <column id="280" parent="236" name="name_of_goods">
+    <column id="269" parent="235" name="name_of_goods">
       <Position>1</Position>
       <DataType>char(70)|0s</DataType>
       <NotNull>1</NotNull>
       <ColumnKind>normal</ColumnKind>
     </column>
-    <column id="281" parent="236" name="accountancy_account">
+    <column id="270" parent="235" name="accountancy_account">
       <Position>2</Position>
       <DataType>int(11)|0s</DataType>
       <NotNull>1</NotNull>
       <ColumnKind>normal</ColumnKind>
     </column>
-    <column id="282" parent="236" name="order_number">
+    <column id="271" parent="235" name="order_number">
       <Position>3</Position>
       <DataType>int(11)|0s</DataType>
       <NotNull>1</NotNull>
       <ColumnKind>normal</ColumnKind>
     </column>
-    <column id="283" parent="236" name="unit">
+    <column id="272" parent="235" name="unit">
       <Position>4</Position>
       <DataType>char(30)|0s</DataType>
       <NotNull>1</NotNull>
       <ColumnKind>normal</ColumnKind>
     </column>
-    <key id="284" parent="236" name="PRIMARY">
+    <key id="273" parent="235" name="PRIMARY">
       <NameSurrogate>1</NameSurrogate>
       <ColNames>name_of_goods</ColNames>
       <Primary>1</Primary>
     </key>
-    <column id="285" parent="237" name="phone_num">
+    <column id="274" parent="236" name="phone_num">
       <Position>1</Position>
       <DataType>varchar(25)|0s</DataType>
       <NotNull>1</NotNull>
       <ColumnKind>normal</ColumnKind>
     </column>
-    <column id="286" parent="237" name="provider_id">
+    <column id="275" parent="236" name="provider_id">
       <Position>2</Position>
-      <DataType>int(11)|0s</DataType>
+      <DataType>varchar(12)|0s</DataType>
       <NotNull>1</NotNull>
       <ColumnKind>normal</ColumnKind>
     </column>
-    <index id="287" parent="237" name="provider_id">
+    <index id="276" parent="236" name="provider_id">
       <ColNames>provider_id</ColNames>
       <Type>btree</Type>
     </index>
-    <key id="288" parent="237" name="PRIMARY">
+    <key id="277" parent="236" name="PRIMARY">
       <NameSurrogate>1</NameSurrogate>
       <ColNames>phone_num</ColNames>
       <Primary>1</Primary>
     </key>
-    <foreign-key id="289" parent="237" name="phonenum_ibfk_1">
+    <foreign-key id="278" parent="236" name="phonenum_ibfk_1">
       <ColNames>provider_id</ColNames>
       <RefSchemaName>sport_department</RefSchemaName>
       <RefTableName>providers</RefTableName>
       <RefColNames>provider_id</RefColNames>
       <OnDelete>cascade</OnDelete>
     </foreign-key>
-    <column id="290" parent="238" name="provider_id">
+    <column id="279" parent="237" name="provider_id">
       <Position>1</Position>
-      <DataType>int(11)|0s</DataType>
+      <DataType>varchar(12)|0s</DataType>
       <NotNull>1</NotNull>
       <ColumnKind>normal</ColumnKind>
     </column>
-    <column id="291" parent="238" name="name_of_provider">
+    <column id="280" parent="237" name="name_of_provider">
       <Position>2</Position>
       <DataType>varchar(255)|0s</DataType>
       <NotNull>1</NotNull>
       <ColumnKind>normal</ColumnKind>
     </column>
-    <column id="292" parent="238" name="city">
+    <column id="281" parent="237" name="city">
       <Position>3</Position>
       <DataType>varchar(255)|0s</DataType>
       <NotNull>1</NotNull>
       <ColumnKind>normal</ColumnKind>
     </column>
-    <column id="293" parent="238" name="street">
+    <column id="282" parent="237" name="street">
       <Position>4</Position>
       <DataType>varchar(255)|0s</DataType>
       <NotNull>1</NotNull>
       <ColumnKind>normal</ColumnKind>
     </column>
-    <column id="294" parent="238" name="built">
+    <column id="283" parent="237" name="built">
       <Position>5</Position>
       <DataType>varchar(255)|0s</DataType>
       <NotNull>1</NotNull>
       <ColumnKind>normal</ColumnKind>
     </column>
-    <column id="295" parent="238" name="flat">
+    <column id="284" parent="237" name="flat">
       <Position>6</Position>
       <DataType>int(11)|0s</DataType>
       <ColumnKind>normal</ColumnKind>
     </column>
-    <column id="296" parent="238" name="phone">
+    <column id="285" parent="237" name="phone">
       <Position>7</Position>
       <DataType>varchar(20)|0s</DataType>
       <NotNull>1</NotNull>
       <ColumnKind>normal</ColumnKind>
     </column>
-    <key id="297" parent="238" name="PRIMARY">
+    <key id="286" parent="237" name="PRIMARY">
       <NameSurrogate>1</NameSurrogate>
       <ColNames>provider_id</ColNames>
       <Primary>1</Primary>
     </key>
-    <column id="298" parent="239" name="id_of_storage">
+    <column id="287" parent="238" name="id_of_storage">
       <Position>1</Position>
       <DataType>int(11)|0s</DataType>
       <NotNull>1</NotNull>
       <SequenceIdentity>1</SequenceIdentity>
       <ColumnKind>normal</ColumnKind>
     </column>
-    <column id="299" parent="239" name="responsible_person">
+    <column id="288" parent="238" name="responsible_person">
       <Position>2</Position>
       <DataType>varchar(50)|0s</DataType>
       <NotNull>1</NotNull>
       <ColumnKind>normal</ColumnKind>
     </column>
-    <column id="300" parent="239" name="address">
+    <column id="289" parent="238" name="address">
       <Position>3</Position>
       <DataType>varchar(50)|0s</DataType>
       <NotNull>1</NotNull>
       <ColumnKind>normal</ColumnKind>
     </column>
-    <index id="301" parent="239" name="address">
+    <index id="290" parent="238" name="address">
       <ColNames>address</ColNames>
       <Unique>1</Unique>
       <Type>btree</Type>
     </index>
-    <key id="302" parent="239" name="PRIMARY">
+    <key id="291" parent="238" name="PRIMARY">
       <NameSurrogate>1</NameSurrogate>
       <ColNames>id_of_storage</ColNames>
       <Primary>1</Primary>
     </key>
-    <key id="303" parent="239" name="address">
+    <key id="292" parent="238" name="address">
       <ColNames>address</ColNames>
       <UnderlyingIndexName>address</UnderlyingIndexName>
     </key>
