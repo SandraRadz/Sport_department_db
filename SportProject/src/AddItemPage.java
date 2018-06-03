@@ -18,7 +18,7 @@ public class AddItemPage extends WindowMenu {
     String[] menu;
     String[] types;
     Label label;
-    JComboBox comboBox;
+    JComboBox cb, cb1, cb2;
     Color or = new Color(246, 184, 61);
 
     public AddItemPage(String nameT, String nameDB) throws SQLException {
@@ -27,7 +27,7 @@ public class AddItemPage extends WindowMenu {
         this.query="select * from "+this.nameInDB +";";
         DataBase db = new DataBase();
         this.rs=db.select(query);
-
+        //db.close();
     }
 
     public int m(){
@@ -43,7 +43,7 @@ public class AddItemPage extends WindowMenu {
         int width = frame.getWidth()/colCount-20;
         int height = 40;
         int x = 15;
-        int y=250;
+        int y=150;
 
         arr =new JTextField[colCount];
         menu = new String[colCount];
@@ -51,11 +51,20 @@ public class AddItemPage extends WindowMenu {
 
         //label for error message
         errorlabel=new Label("");
+        errorlabel.setForeground(Color.red);
         errorlabel.setSize(400, height);
         errorlabel.setLocation(x, y+height);
         frame.add(errorlabel);
 
         label = new Label("");
+        if(nameInDB=="bill"){
+            try {
+                printBillDet();
+            } catch (SQLException e1) {
+                e1.printStackTrace();
+            }
+        }
+
         for (int i = 0; i<colCount; i++) {
             //тип значення, що вводиться
             types[i] = rs.getMetaData().getColumnTypeName(i + 1);
@@ -67,17 +76,40 @@ public class AddItemPage extends WindowMenu {
             frame.add(label);
 
             if(nameInDB.equals("accounts") && menu[i].equals("MFI_bank")) {
-                JComboBox cb = createComboBox("MFI_bank", "bank", width, height, x, y );
+                cb = createComboBox("MFI_bank", "bank", width, height, x, y );
                 frame.add(cb);
             }
             else if(nameInDB.equals("contracts") && menu[i].equals("provider_id")){
-                JComboBox cb = createComboBox("provider_id", "providers", width, height, x, y );
+                cb=createComboBox("provider_id", "providers", width, height, x, y );
+
                 frame.add(cb);
+            }
+            else if(nameInDB.equals("contracts") && menu[i].equals("name_of_goods")){
+                cb1 = createComboBox("name_of_goods", "nomenOfDel", width, height, x, y );
+                frame.add(cb1);
+            }
+            else if(nameInDB.equals("goodsOnStor") && menu[i].equals("name_of_storage")){
+                cb2 = createComboBox("name_of_storage", "regOfStor", width, height, x, y );
+                frame.add(cb2);
+            }
+            else if(nameInDB.equals("goodsOnStor") && menu[i].equals("name_of_goods")){
+                cb = createComboBox("name_of_goods", "nomenOfDel", width, height, x, y );
+                frame.add(cb);
+            }
+            else if(nameInDB.equals("goodsOnStor") && menu[i].equals("bill_id")){
+                cb1 = createComboBox("bill_id", "bill", width, height, x, y );
+                frame.add(cb1);
+            }
+            else if(nameInDB.equals("bill") && menu[i].equals("provider_id")){
+                cb=createComboBox("provider_id", "providers", width, height, x, y );
+                frame.add(cb);
+            }
+            else if(nameInDB.equals("bill") && menu[i].equals("account_id")){
+                cb1 = createComboBox("account_id", "accounts", width, height, x, y );
+                frame.add(cb1);
             }
             //дефолт
             else {
-                System.out.println(menu[i]);
-                System.out.println(nameInDB);
                 arr[i] = new JTextField();
                 arr[i].setSize(width, height);
                 arr[i].setLocation(x, y);
@@ -109,14 +141,84 @@ public class AddItemPage extends WindowMenu {
                             return;
                         }
                         if(arr[0].getText().matches("[-+]?\\d+")){
-                            q += arr[0].getText() + ", ";}
-                        q+=comboBox.getSelectedItem()+");";
+                            q += arr[0].getText() + ", ";
+                        }
+                        q+=cb.getSelectedItem()+");";
                     }
+
                     else if(nameInDB.equals("contracts")) {
+                        if(arr[0].getText().isEmpty() || arr[3].getText().isEmpty() || arr[4].getText().isEmpty()){
+                            errorlabel.setText("Заповніть всі поля");
+                            return;
+                        }
                         if(arr[0].getText().matches("[-+]?\\d+")){
                             q += arr[0].getText() + ", ";}
-                        q+=comboBox.getSelectedItem()+");";
+                        else {
+                            errorlabel.setText("Здається, ви ввели некоректні значення в деякі поля (" + arr[0] + ")");
+                            arr[0].setText(null);
+                            return;
+                        }
 
+                        q+="'"+cb.getSelectedItem()+"', '"+cb1.getSelectedItem()+"', ";
+                        if(arr[3].getText().matches("(19|20)\\d\\d-((0[1-9]|1[012])-(0[1-9]|[12]\\d)|(0[13-9]|1[012])-30|(0[13578]|1[02])-31)") && arr[3].getText().matches("(19|20)\\d\\d-((0[1-9]|1[012])-(0[1-9]|[12]\\d)|(0[13-9]|1[012])-30|(0[13578]|1[02])-31)")){
+                            q += "'"+arr[3].getText() + "', '"+arr[4].getText()+"');";
+                    }
+                        else {
+                           errorlabel.setText("Введіть дату в форматі рік-місяць-день");
+                            return;
+                       }
+        }
+                    else if(nameInDB.equals("goodsOnStor")) {
+                        if (arr[0].getText().isEmpty() || arr[2].getText().isEmpty() || arr[3].getText().isEmpty()) {
+                            errorlabel.setText("Заповніть всі поля");
+                            return;
+                        }
+                        //ПЕРЕПИСАТИ
+                        if (arr[0].getText().matches("[-+]?\\d+")) q += arr[0].getText() + ", ";
+                        else {
+                            errorlabel.setText("Здається, ви ввели некоректні значення в деякі поля (" + arr[0] + ")");
+                            arr[0].setText(null);
+                            return;
+                        }
+                        q += "'" + cb.getSelectedItem() + "', ";
+                        if (arr[2].getText().matches("[-+]?\\d+")) q += arr[2].getText() + ", ";
+                        else {
+                            errorlabel.setText("Здається, ви ввели некоректні значення в деякі поля (" + arr[2] + ")");
+                            arr[2].setText(null);
+                            return;
+                        }
+
+                        if (arr[3].getText().matches("[-+]?\\d+.\\d+")) q += arr[3].getText() + ", ";
+                        else {
+                            errorlabel.setText("Здається, ви ввели некоректні значення в деякі поля (" + arr[3] + ")");
+                            arr[3].setText(null);
+                            return;
+                        }
+                        q += "'"+cb1.getSelectedItem() + "', '"+cb2.getSelectedItem() + "');";
+                    }
+                    else if(nameInDB.equals("bill")) {
+                        if(arr[0].getText().isEmpty() || arr[1].getText().isEmpty() || arr[2].getText().isEmpty() || arr[3].getText().isEmpty()){
+                            errorlabel.setText("Заповніть всі поля");
+                            return;
+                        }
+                        q += " '"+arr[0].getText() + "', ";
+                        if(arr[1].getText().matches("(19|20)\\d\\d-((0[1-9]|1[012])-(0[1-9]|[12]\\d)|(0[13-9]|1[012])-30|(0[13578]|1[02])-31)") ){
+                            q += "'"+arr[1].getText() + "', '"+arr[2].getText() +"', ";
+                        }
+                        else {
+                            errorlabel.setText("Введіть дату в форматі рік-місяць-день");
+                            return;
+                        }
+                        if (arr[3].getText().matches("[-+]?\\d+.\\d+"))
+                        {
+                            q += arr[3].getText() + ", ";
+                        }
+                        else {
+                            errorlabel.setText("Здається, ви ввели некоректні значення в деякі поля (" + arr[3] + ")");
+                            arr[3].setText(null);
+                            return;
+                        }
+                        q+= "'"+cb.getSelectedItem() + "', '"+cb1.getSelectedItem() + "');";
 
                     }
                     else {
@@ -179,7 +281,8 @@ public class AddItemPage extends WindowMenu {
     }
 
     private JComboBox createComboBox(String fieldName, String tableName, int width, int height, int x, int y ) throws SQLException {
-            DataBase db = new DataBase();
+        JComboBox comboBox;
+        DataBase db = new DataBase();
             String q = "select "+fieldName +" from "+ tableName+";";
             ResultSet res =  db.select(q);
             Vector FKlist = new Vector();
@@ -198,6 +301,48 @@ public class AddItemPage extends WindowMenu {
             return comboBox;
     }
 
+    public void printBillDet() throws SQLException {
+        String q="select * from billDet;";
+        DataBase datab = new DataBase();
+        ResultSet resset=datab.select(q);
+        int count = rs.getMetaData().getColumnCount();
+        int width = frame.getWidth()/count -20;
+        int height = 30;
+        int x = 15;
+        int y=280;
+
+        Label lab = new Label("Додати товари в накладну");
+        lab.setSize(300, 30);
+        lab.setLocation(x, 220);
+        frame.add(lab);
+
+
+        String menuDet[] = new String[count];
+        JTextField[] fields = new JTextField[count];
+        for (int i = 0; i<count; i++) {
+            //підпис
+            menuDet[i] = resset.getMetaData().getColumnLabel(i + 1);
+            Label l = new Label(menuDet[i]);
+            l.setSize(width, height);
+            l.setLocation(x, y - height);
+            frame.add(l);
+            System.out.println("DGYSHASDGUHJDSGAUJSOIAD");
+            if(menuDet[i].equals("MFI_bank")) {
+                cb = createComboBox("MFI_bank", "bank", width, height, x, y );
+                frame.add(cb);
+            }
+            //дефолт
+            else {
+                System.out.println(menu[i]);
+                fields[i] = new JTextField();
+                fields[i].setSize(width, height);
+                fields[i].setLocation(x, y);
+                frame.add(fields[i]);
+            }
+            x += width + 10;
+        }
+
+    }
     private boolean exists() throws SQLException {
 
         while(rs.next()){

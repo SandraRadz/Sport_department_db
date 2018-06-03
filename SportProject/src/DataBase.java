@@ -61,10 +61,10 @@ public class DataBase {
 
 
             query = "CREATE TABLE IF NOT EXISTS regOfStor ("+
-                    "id_of_storage INT NOT NULL AUTO_INCREMENT,"+
+                    "name_of_storage VARCHAR(50) NOT NULL,"+
                     "responsible_person VARCHAR(50) NOT NULL,"+
                     "address VARCHAR(50) NOT NULL,"+
-                    "PRIMARY KEY (id_of_storage),"+
+                    "PRIMARY KEY (name_of_storage),"+
                     "UNIQUE(address));";
             stmt.executeUpdate(query);
 
@@ -95,10 +95,10 @@ public class DataBase {
                     "                    amount CHAR(50) NOT NULL,\n" +
                     "                    summ REAL NOT NULL,\n" +
                     "                    bill_id INT NOT NULL,\n" +
-                    "                    id_of_storage INT NOT NULL,\n" +
+                    "                    name_of_storage VARCHAR(50) NOT NULL,\n" +
                     "                    PRIMARY KEY (goods_on_storages_id),\n" +
                     "                    FOREIGN KEY (bill_id) REFERENCES bill(bill_id) ON DELETE NO ACTION ON UPDATE CASCADE,\n" +
-                    "                    FOREIGN KEY (id_of_storage) REFERENCES regOfStor(id_of_storage) ON DELETE NO ACTION ON UPDATE CASCADE\n" +
+                    "                    FOREIGN KEY (name_of_storage) REFERENCES regOfStor(name_of_storage) ON DELETE NO ACTION ON UPDATE CASCADE\n" +
                     "            );";
             stmt.executeUpdate(query);
 
@@ -119,7 +119,7 @@ public class DataBase {
             stmt.executeUpdate(query);
 
             query = "CREATE TABLE IF NOT EXISTS billDetGoods(\n" +
-                    "  id INT NOT NULL AUTO_INCREMENT,\n" +
+                    "  id INT NOT NULL ,\n" +
                     "  bill_det_id INT NOT NULL,\n" +
                     "  goods_on_storages_id INT NOT NULL,\n" +
                     "  PRIMARY KEY (id),\n" +
@@ -129,7 +129,7 @@ public class DataBase {
             stmt.executeUpdate(query);
 
             query = "CREATE TABLE IF NOT EXISTS contracts(\n" +
-                    "  contracts_id INT NOT NULL AUTO_INCREMENT,\n" +
+                    "  contracts_id INT NOT NULL ,\n" +
                     "  provider_id VARCHAR(12) NOT NULL,\n" +
                     "  name_of_goods CHAR(70) NOT NULL,\n" +
                     "  date_from DATE NOT NULL,\n" +

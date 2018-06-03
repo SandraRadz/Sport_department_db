@@ -15,9 +15,7 @@ public class Main {
                     e.printStackTrace();
                 }
                 try {
-                    //ShowResPage ta = new ShowResPage("Постачальники", "providers",  db);
-                    ShowResPage ta = new ShowResPage("Рахунки", "accounts");
-                    //ShowResPage ta = new ShowResPage("Постачальники", "providers",  db);
+                    ShowResPage ta = new ShowResPage("НАКЛАДНІ", "bill");
                     ta.show();
 
                 } catch (SQLException e) {
