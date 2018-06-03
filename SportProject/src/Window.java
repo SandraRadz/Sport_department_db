@@ -30,7 +30,6 @@ public class Window {
 
 
     public void show() throws SQLException {
-        JFrame.setDefaultLookAndFeelDecorated(true);
         frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
         frame.setSize(1000,800);

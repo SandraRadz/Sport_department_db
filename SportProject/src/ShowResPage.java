@@ -173,7 +173,6 @@ public class ShowResPage extends WindowMenu {
 
         addDBTable(30, 300, query);
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        JFrame.setDefaultLookAndFeelDecorated(true);
     }
 
     public void addButtons(){

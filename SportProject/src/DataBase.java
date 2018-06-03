@@ -77,7 +77,7 @@ public class DataBase {
             stmt.executeUpdate(query);
 
             query = "CREATE TABLE IF NOT EXISTS bill ("+
-                    "bill_id INT NOT NULL AUTO_INCREMENT,"+
+                    "bill_id INT NOT NULL ,"+
                     "date_of_bill DATE NOT NULL,"+
                     "number_from_provider VARCHAR(12) NOT NULL,"+
                     "sum_of_bill real NOT NULL,"+
@@ -90,7 +90,7 @@ public class DataBase {
 
 
             query = "CREATE TABLE IF NOT EXISTS goodsOnStor(\n" +
-                    "                    goods_on_storages_id INT NOT NULL AUTO_INCREMENT,\n" +
+                    "                    goods_on_storages_id INT NOT NULL ,\n" +
                     "                    name_of_goods CHAR(50) NOT NULL,\n" +
                     "                    amount CHAR(50) NOT NULL,\n" +
                     "                    summ REAL NOT NULL,\n" +
@@ -103,14 +103,13 @@ public class DataBase {
             stmt.executeUpdate(query);
 
             query = "CREATE TABLE IF NOT EXISTS billDet(\n" +
-                    "  bill_det_id INT NOT NULL AUTO_INCREMENT,\n" +
+                    "  bill_det_id INT NOT NULL ,\n" +
                     "  name_of_goods CHAR(70) NOT NULL,\n" +
                     "  price_per_unit REAL NOT NULL,\n" +
                     "  amount INT NOT NULL,\n" +
                     "  summ REAL NOT NULL,\n" +
                     "  VAT REAL,\n" +
                     "  sum_VAT REAL,\n" +
-                    "  state CHAR(30),\n" +
                     "  bill_id INT NOT NULL,\n" +
                     "  PRIMARY KEY (bill_det_id),\n" +
                     "  FOREIGN KEY (name_of_goods) REFERENCES nomenOfDel(name_of_goods) ON DELETE NO ACTION ON UPDATE CASCADE,\n" +

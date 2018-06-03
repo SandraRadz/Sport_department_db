@@ -1,9 +1,15 @@
 import javax.swing.*;
+import javax.swing.event.TableModelListener;
+import javax.swing.table.AbstractTableModel;
+import javax.swing.table.TableModel;
+import javax.xml.crypto.Data;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.HashSet;
+import java.util.Set;
 import java.util.Vector;
 
 public class AddItemPage extends WindowMenu {
@@ -14,12 +20,17 @@ public class AddItemPage extends WindowMenu {
     private Label errorlabel;
 
 
-    JTextField[] arr;
-    String[] menu;
-    String[] types;
-    Label label;
+    JTextField[] arr, fields;
+    Vector  goodsline, goodstable,menuDet;
+    String[] menu, types;
+    JScrollPane scrollPane;
+    JTable table;
+    AbstractTableModel tableModel;
+    int count;
+    Label label, lab;
     JComboBox cb, cb1, cb2;
     Color or = new Color(246, 184, 61);
+    Color gr = new Color(6, 100, 1);
 
     public AddItemPage(String nameT, String nameDB) throws SQLException {
         super(nameT);
@@ -93,7 +104,7 @@ public class AddItemPage extends WindowMenu {
                 frame.add(cb2);
             }
             else if(nameInDB.equals("goodsOnStor") && menu[i].equals("name_of_goods")){
-                cb = createComboBox("name_of_goods", "nomenOfDel", width, height, x, y );
+                cb = createComboBox("name_of_goods", "billDet", width, height, x, y );
                 frame.add(cb);
             }
             else if(nameInDB.equals("goodsOnStor") && menu[i].equals("bill_id")){
@@ -120,7 +131,7 @@ public class AddItemPage extends WindowMenu {
 
         backButton();
         saveButtons();
-        JFrame.setDefaultLookAndFeelDecorated(true);
+
     }
 
 
@@ -131,6 +142,8 @@ public class AddItemPage extends WindowMenu {
         saveItem.setBackground(or);
         saveItem.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
+                errorlabel.setLocation(15, 190);
+                errorlabel.setText("");
                 ShowResPage main = new ShowResPage(nameOfTable, nameInDB);
                 int size = menu.length;
                 DataBase db = new DataBase();
@@ -188,7 +201,7 @@ public class AddItemPage extends WindowMenu {
                             return;
                         }
 
-                        if (arr[3].getText().matches("[-+]?\\d+.\\d+")) q += arr[3].getText() + ", ";
+                        if (arr[3].getText().matches("[-+]?\\d+[.]?\\d+")) q += arr[3].getText() + ", ";
                         else {
                             errorlabel.setText("Здається, ви ввели некоректні значення в деякі поля (" + arr[3] + ")");
                             arr[3].setText(null);
@@ -197,6 +210,10 @@ public class AddItemPage extends WindowMenu {
                         q += "'"+cb1.getSelectedItem() + "', '"+cb2.getSelectedItem() + "');";
                     }
                     else if(nameInDB.equals("bill")) {
+                        if(goodstable.size()==0) {
+                            errorlabel.setText("Накладна не може існувати без жодного товару");
+                            return;
+                        }
                         if(arr[0].getText().isEmpty() || arr[1].getText().isEmpty() || arr[2].getText().isEmpty() || arr[3].getText().isEmpty()){
                             errorlabel.setText("Заповніть всі поля");
                             return;
@@ -209,7 +226,7 @@ public class AddItemPage extends WindowMenu {
                             errorlabel.setText("Введіть дату в форматі рік-місяць-день");
                             return;
                         }
-                        if (arr[3].getText().matches("[-+]?\\d+.\\d+"))
+                        if (arr[3].getText().matches("[-+]?\\d+[.]?\\d+"))
                         {
                             q += arr[3].getText() + ", ";
                         }
@@ -219,6 +236,44 @@ public class AddItemPage extends WindowMenu {
                             return;
                         }
                         q+= "'"+cb.getSelectedItem() + "', '"+cb1.getSelectedItem() + "');";
+                        try {
+                            db.add(q);
+                        } catch (SQLException e1) {
+                            e1.printStackTrace();
+                        }
+
+                        String addGoodsQuery ="INSERT INTO billDet VALUES";
+                        for(int cq=0; cq<goodstable.size(); cq++){
+                            Vector line = (Vector) goodstable.get(cq);
+                            int qq= 0;
+                            try {
+                               qq = countOfRows("billDet");
+                            } catch (SQLException e1) {
+                                e1.printStackTrace();
+                            }
+                            qq++;
+                            System.out.println("QQ     =   "+qq);
+                            addGoodsQuery+="("+qq+", '"+line.get(0)+"', "+line.get(1)+", "+line.get(2)+", "+line.get(3)+", "+line.get(4)+", "+line.get(5)+", "+arr[0].getText()+")";
+                            if(cq<goodstable.size()-1)addGoodsQuery+=",";
+                            else addGoodsQuery+=";";
+                        }
+
+                        System.out.println(addGoodsQuery);
+                        DataBase dq = new DataBase();
+                        try {
+                            dq.add(addGoodsQuery);
+                            dq.close();
+                        } catch (SQLException e1) {
+                            e1.printStackTrace();
+                        }
+
+                        try {
+                            main.show();
+                            db.close();
+                        } catch (SQLException e1) {
+                            e1.printStackTrace();
+                        }
+                        frame.dispose();
 
                     }
                     else {
@@ -247,10 +302,12 @@ public class AddItemPage extends WindowMenu {
                                     else q+="');";
                                 }
                             }
+
                     }
                 System.out.println(q);
                 try {
                         db.add(q);
+                        db.close();
                         main.show();
                         frame.dispose();
                 } catch (SQLException e1) {
@@ -305,43 +362,178 @@ public class AddItemPage extends WindowMenu {
         String q="select * from billDet;";
         DataBase datab = new DataBase();
         ResultSet resset=datab.select(q);
-        int count = rs.getMetaData().getColumnCount();
-        int width = frame.getWidth()/count -20;
-        int height = 30;
+        count = resset.getMetaData().getColumnCount();
+        System.out.println(count);
+        int w = frame.getWidth()/(count-2) -20;
+        int h = 30;
         int x = 15;
-        int y=280;
+        int y=295;
 
-        Label lab = new Label("Додати товари в накладну");
-        lab.setSize(300, 30);
+        lab = new Label("Додати товари в накладну");
+        lab.setSize(200, 30);
         lab.setLocation(x, 220);
         frame.add(lab);
 
 
-        String menuDet[] = new String[count];
-        JTextField[] fields = new JTextField[count];
-        for (int i = 0; i<count; i++) {
+        menuDet = new Vector();
+        fields = new JTextField[count];
+        for (int i = 1; i<count-1; i++) {
             //підпис
-            menuDet[i] = resset.getMetaData().getColumnLabel(i + 1);
-            Label l = new Label(menuDet[i]);
-            l.setSize(width, height);
-            l.setLocation(x, y - height);
+            menuDet.add(resset.getMetaData().getColumnLabel(i + 1));
+            Label l = new Label(menuDet.get(i-1).toString());
+            l.setSize(w, h);
+            l.setLocation(x, y - h);
             frame.add(l);
-            System.out.println("DGYSHASDGUHJDSGAUJSOIAD");
-            if(menuDet[i].equals("MFI_bank")) {
-                cb = createComboBox("MFI_bank", "bank", width, height, x, y );
-                frame.add(cb);
+            if(menuDet.get(i-1).toString().equals("name_of_goods")) {
+                cb2 = createComboBox("name_of_goods", "nomenOfDel", w, h, x, y );
+                frame.add(cb2);
             }
             //дефолт
             else {
-                System.out.println(menu[i]);
                 fields[i] = new JTextField();
-                fields[i].setSize(width, height);
+                fields[i].setSize(w, h);
                 fields[i].setLocation(x, y);
                 frame.add(fields[i]);
             }
-            x += width + 10;
+            x += w + 10;
         }
 
+        goodstable = new Vector();
+        addsmallplusButton();
+        addsmallremoveButton();
+
+        //goodsline.add();
+           }
+
+    public void addsmallplusButton(){
+        JButton goodAddItem = new JButton("<html> <style type='text/css'>.plus{color: white; font-size:20; text-align:center;} </style><div class='plus'>+</div></html>");
+        goodAddItem.setSize(25, 25);
+        goodAddItem.setLocation(lab.getX()+lab.getWidth()+10, lab.getY()+10);
+        goodAddItem.setBackground(gr);
+
+            tableModel = new AbstractTableModel() {
+
+                private Set<TableModelListener> listeners = new HashSet<TableModelListener>();
+
+                public void addTableModelListener(TableModelListener listener) {
+                    listeners.add(listener);
+                }
+
+                public void removeTableModelListener(TableModelListener listener) {
+                    listeners.remove(listener);
+                }
+
+                public Class<?> getColumnClass(int columnIndex) {
+                    return String.class;
+                }
+
+                public int getColumnCount() {
+                    return menuDet.size();
+                }
+
+                public int getRowCount() {
+                    return goodstable.size();
+                }
+                public String getColumnName(int columnIndex) {
+                    return menuDet.get(columnIndex).toString();
+                }
+
+
+                public Object getValueAt(int rowIndex, int columnIndex) {
+                    Vector r = (Vector) goodstable.get(rowIndex);
+                    return r.get(columnIndex);
+                }
+
+                public boolean isCellEditable(int rowIndex, int columnIndex) {
+                    return false;
+                }
+
+                public void setValueAt(Object value, int rowIndex, int columnIndex) {
+                }
+            };
+
+        table = new JTable(tableModel);
+        table.setAutoCreateColumnsFromModel(true);
+        table.setIgnoreRepaint(false);
+        table.repaint();
+        table.setRowHeight(30);
+        scrollPane = new JScrollPane(table);
+        scrollPane.setSize(frame.getWidth()-70, 180);
+        scrollPane.setLocation(15,400);
+        frame.add(scrollPane);
+        //table.setSize(frame.getWidth()-70, 180);
+        //table.setLocation(15,400);
+        //frame.add(table);
+
+
+        goodAddItem.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                errorlabel.setLocation(15, 350);
+                errorlabel.setText("");
+                goodsline = new Vector();
+                goodsline.add(cb2.getSelectedItem());
+                for (int t=2; t<count-1; t++){
+                    if(fields[t].getText().isEmpty()){
+                        errorlabel.setLocation(15, 350);
+                        errorlabel.setText("Заповніть всі поля");
+                        return;
+                    }
+                    if (fields[t].getText().matches("\\d*[+.?\\d+]")) {
+                        goodsline.add(fields[t].getText());
+                        System.out.println(fields[t].getText()+"    *******   ");
+                    } else {
+                        errorlabel.setLocation(15, 350);
+                        errorlabel.setText("Здається, ви ввели некоректні значення в деякі поля ("+menuDet.get(t-1)+")");
+                        return;
+                    }
+                }
+                goodstable.add(goodsline.clone());
+                for (int t=2; t<count-1; t++){
+                    fields[t].setText("");
+                    }
+
+                tableModel.fireTableStructureChanged();
+                frame.remove(scrollPane);
+                table.repaint();
+                scrollPane = new JScrollPane(table);
+                scrollPane.setSize(frame.getWidth()-70, 180);
+                scrollPane.setLocation(15,400);
+                table.setRowHeight(30);
+                frame.add(scrollPane);
+                scrollPane.repaint();
+            }
+        });
+        frame.add(goodAddItem);
+    }
+
+
+    public void addsmallremoveButton() {
+        JButton goodRemoveItem = new JButton("<html> <style type='text/css'>.plus{color: white; font-size:20; text-align:center;} </style><div class='plus'>-</div></html>");
+        goodRemoveItem.setSize(25, 25);
+        goodRemoveItem.setLocation(lab.getX() + lab.getWidth() + 60, lab.getY()+10);
+        goodRemoveItem.setBackground(Color.red);
+        goodRemoveItem.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                DataBase data = new DataBase();
+                int itemnum = table.getSelectedRow();
+                Vector r = (Vector) goodstable.get(itemnum);
+                System.out.println("vec  "+r);
+                System.out.println(r.get(0));
+                String q = "DELETE FROM " + nameInDB + " WHERE bill_id = " + arr[0].getText() +" AND name_of_goods='"+ cb2.getSelectedItem().toString() +"' amount="+ r.get(1)+";";
+                System.out.println(q);
+                try {
+                    data.delete(q);
+                } catch (SQLException e1) {
+                    e1.printStackTrace();
+                }
+                try {
+                    data.close();
+                } catch (SQLException e1) {
+                    e1.printStackTrace();
+                }
+            }
+        });
+        frame.add(goodRemoveItem);
     }
     private boolean exists() throws SQLException {
 
@@ -351,4 +543,19 @@ public class AddItemPage extends WindowMenu {
         return false;
     }
 
+    private int countOfRows(String nameOfTable) throws SQLException {
+        DataBase q = new DataBase();
+        String que = "select * from "+nameOfTable+";";
+        ResultSet rs=q.select(que);
+        int count=0;
+        while(rs.next())
+            count++;
+        q.close();
+        return count;
+    }
+
 }
+
+
+
+
