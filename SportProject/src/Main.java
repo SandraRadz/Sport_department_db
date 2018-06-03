@@ -6,18 +6,23 @@ public class Main {
         javax.swing.SwingUtilities.invokeLater(new Runnable() {
 
             public void run() {
-                //System.setProperty("file.encoding","UTF-8");
-                DataBase db = new DataBase();
-                db.addTables();
+//                DataBase db = new DataBase();
+//                db.addTables();
+//                try {
+//                    db.close();
+//                } catch (SQLException e) {
+//                    e.printStackTrace();
+//                }
+//                try {
+//                    ShowResPage ta = new ShowResPage("НАКЛАДНІ", "bill");
+//                    ta.show();
+//
+//                } catch (SQLException e) {
+//                    e.printStackTrace();
+//                }
+                StartForm startForm = new StartForm();
                 try {
-                    db.close();
-                } catch (SQLException e) {
-                    e.printStackTrace();
-                }
-                try {
-                    ShowResPage ta = new ShowResPage("НАКЛАДНІ", "bill");
-                    ta.show();
-
+                    startForm.show();
                 } catch (SQLException e) {
                     e.printStackTrace();
                 }

@@ -139,6 +139,25 @@ public class DataBase {
                     ");";
             stmt.executeUpdate(query);
 
+            query = "CREATE TABLE IF NOT EXISTS users(\n" +
+                    "  first_name VARCHAR(20) NOT NULL ,\n" +
+                    "  last_name VARCHAR(20) NOT NULL,\n" +
+                    "  statusP VARCHAR(20) NOT NULL,\n" +
+                    "  login VARCHAR(20) NOT NULL,\n" +
+                    "  password VARCHAR(20) NOT NULL,\n" +
+                    "  PRIMARY KEY (login)\n" +
+                    ");";
+            stmt.executeUpdate(query);
+
+//            query="INSERT INTO users\n" +
+//                    "VALUES\n" +
+//                    "  ('Oleksandra', 'Radzievska', 'admin', 'admin', 'admin'),\n" +
+//                    "  ('Марія', 'Ширкожухова', 'dir', 'admin1', 'admin1'),\n" +
+//                    "  ('Вадим', 'Лозниця', 'buh', 'admin2', 'admin2'),\n" +
+//                    "  ('Ксенія', 'Остапенко', 'vid_os', 'admin3', 'admin3')\n" +
+//                    ";";
+//            stmt.executeUpdate(query);
+
         } catch (SQLException e) {
             e.printStackTrace();
         }
