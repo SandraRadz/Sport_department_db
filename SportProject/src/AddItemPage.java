@@ -1,12 +1,7 @@
-import com.sun.prism.shader.Solid_TextureSecondPassLCD_AlphaTest_Loader;
-import com.sun.scenario.effect.impl.sw.sse.SSEBlend_SRC_OUTPeer;
-import com.sun.xml.internal.ws.api.client.SelectOptimalEncodingFeature;
-
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.io.UnsupportedEncodingException;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.Vector;
@@ -26,12 +21,13 @@ public class AddItemPage extends WindowMenu {
     JComboBox comboBox;
     Color or = new Color(246, 184, 61);
 
-    public AddItemPage(String nameT, String nameDB, DataBase dataBase) throws SQLException {
+    public AddItemPage(String nameT, String nameDB) throws SQLException {
         super(nameT);
-        this.dataBase=dataBase;
         this.nameInDB=nameDB;
         this.query="select * from "+this.nameInDB +";";
-        this.rs=dataBase.select(query);
+        DataBase db = new DataBase();
+        this.rs=db.select(query);
+
     }
 
     public int m(){
@@ -59,7 +55,7 @@ public class AddItemPage extends WindowMenu {
         errorlabel.setLocation(x, y+height);
         frame.add(errorlabel);
 
-
+        label = new Label("");
         for (int i = 0; i<colCount; i++) {
             //тип значення, що вводиться
             types[i] = rs.getMetaData().getColumnTypeName(i + 1);
@@ -70,23 +66,13 @@ public class AddItemPage extends WindowMenu {
             label.setLocation(x, y - height);
             frame.add(label);
 
-            if(menu[i].equals("MFI_bank") && nameInDB.equals("accounts")) {
-                    String q = "select MFI_bank from bank;";
-                    ResultSet res =  dataBase.select(q);
-                    Vector banklist = new Vector();
-                    try {
-                        while(res.next()){
-                        banklist.add(res.getString(1));
-                        System.out.println(res.getString(1));
-                    }
-                } catch (SQLException e1) {
-                    e1.printStackTrace();
-                }
-                comboBox = new JComboBox(banklist);
-                comboBox.setSize(width, height);
-                comboBox.setLocation(x, y);
-                frame.add(comboBox);
-                x += width + 10;
+            if(nameInDB.equals("accounts") && menu[i].equals("MFI_bank")) {
+                JComboBox cb = createComboBox("MFI_bank", "bank", width, height, x, y );
+                frame.add(cb);
+            }
+            else if(nameInDB.equals("contracts") && menu[i].equals("provider_id")){
+                JComboBox cb = createComboBox("provider_id", "providers", width, height, x, y );
+                frame.add(cb);
             }
             //дефолт
             else {
@@ -96,8 +82,8 @@ public class AddItemPage extends WindowMenu {
                 arr[i].setSize(width, height);
                 arr[i].setLocation(x, y);
                 frame.add(arr[i]);
-                x += width + 10;
             }
+            x += width + 10;
         }
 
         backButton();
@@ -113,8 +99,9 @@ public class AddItemPage extends WindowMenu {
         saveItem.setBackground(or);
         saveItem.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
-                ShowResPage main = new ShowResPage(nameOfTable, nameInDB, dataBase);
+                ShowResPage main = new ShowResPage(nameOfTable, nameInDB);
                 int size = menu.length;
+                DataBase db = new DataBase();
                 String q ="INSERT INTO "+ nameInDB+"\n VALUES (";
                     if(nameInDB.equals("accounts")) {
                         if(arr[0].getText().isEmpty() || arr[0].getText() == null){
@@ -134,8 +121,6 @@ public class AddItemPage extends WindowMenu {
                     }
                     else {
                         for (int i = 0; i < size; i++) {
-                            //if empty fields exists
-                                //check type of field
                             if (arr[i].getText().isEmpty() || arr[i].getText() == null) {
                                 if (menu[i].equals("flat")) {
                                     q += "null, ";
@@ -162,9 +147,8 @@ public class AddItemPage extends WindowMenu {
                             }
                     }
                 System.out.println(q);
-                    //create new item if no empty fields
                 try {
-                        dataBase.add(q);
+                        db.add(q);
                         main.show();
                         frame.dispose();
                 } catch (SQLException e1) {
@@ -182,7 +166,7 @@ public class AddItemPage extends WindowMenu {
         cancelItem.setBackground(or);
         cancelItem.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
-                ShowResPage main = new ShowResPage(nameOfTable, nameInDB, dataBase);
+                ShowResPage main = new ShowResPage(nameOfTable, nameInDB);
                 try {
                     main.show();
                 } catch (SQLException e1) {
@@ -192,6 +176,26 @@ public class AddItemPage extends WindowMenu {
             }
         });
         frame.add(cancelItem);
+    }
+
+    private JComboBox createComboBox(String fieldName, String tableName, int width, int height, int x, int y ) throws SQLException {
+            DataBase db = new DataBase();
+            String q = "select "+fieldName +" from "+ tableName+";";
+            ResultSet res =  db.select(q);
+            Vector FKlist = new Vector();
+            try {
+                while(res.next()){
+                    FKlist.add(res.getString(1));
+                    System.out.println(res.getString(1));
+                }
+            } catch (SQLException e1) {
+                e1.printStackTrace();
+            }
+            comboBox = new JComboBox(FKlist);
+            comboBox.setSize(width, height);
+            comboBox.setLocation(x, y);
+            db.close();
+            return comboBox;
     }
 
     private boolean exists() throws SQLException {

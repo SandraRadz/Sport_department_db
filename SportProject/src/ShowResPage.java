@@ -12,7 +12,7 @@ public class ShowResPage extends WindowMenu {
     Color or = new Color(246, 184, 61);
     Color gr = new Color(12, 184, 61);
 
-    private DataBase dataBase;
+    //private DataBase dataBase;
     private String query;
     protected String nameInDB;
     JTable table;
@@ -20,9 +20,8 @@ public class ShowResPage extends WindowMenu {
     int lineCount;
     Vector r, v;
 
-    public ShowResPage(String nameT, String nameDB, DataBase dataBase) {
+    public ShowResPage(String nameT, String nameDB) {
         super(nameT);
-        this.dataBase=dataBase;
         this.nameInDB=nameDB;
         this.query="select * from "+this.nameInDB +";";
     }
@@ -39,7 +38,7 @@ public class ShowResPage extends WindowMenu {
         bank.setLocation(frame.getWidth()/30,y);
         bank.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
-                ShowResPage newP = new ShowResPage("БАНКИ", "bank", dataBase);
+                ShowResPage newP = new ShowResPage("БАНКИ", "bank");
                 try {
                     newP.show();
                 } catch (SQLException e1) {
@@ -57,7 +56,7 @@ public class ShowResPage extends WindowMenu {
         accounts.setLocation(frame.getWidth()/30,y);
         accounts.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
-                ShowResPage newP = new ShowResPage("РАХУНКИ", "accounts", dataBase);
+                ShowResPage newP = new ShowResPage("РАХУНКИ", "accounts");
                 try {
                     newP.show();
                 } catch (SQLException e1) {
@@ -74,7 +73,7 @@ public class ShowResPage extends WindowMenu {
         bill.setLocation(frame.getWidth()/30,y);
         bill.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
-                ShowResPage newP = new ShowResPage("НАКЛАДНІ", "bill", dataBase);
+                ShowResPage newP = new ShowResPage("НАКЛАДНІ", "bill");
                 try {
                     newP.show();
                 } catch (SQLException e1) {
@@ -91,7 +90,7 @@ public class ShowResPage extends WindowMenu {
         nomenOfDel.setLocation(frame.getWidth()/30,y);
         nomenOfDel.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
-                ShowResPage newP = new ShowResPage("ТОВАРИ", "nomenOfDel", dataBase);
+                ShowResPage newP = new ShowResPage("ТОВАРИ", "nomenOfDel");
                 try {
                     newP.show();
                 } catch (SQLException e1) {
@@ -108,7 +107,7 @@ public class ShowResPage extends WindowMenu {
         providers.setLocation(frame.getWidth()/30,y);
         providers.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
-                ShowResPage newP = new ShowResPage("ПОСТАЧАЛЬНИКИ", "providers", dataBase);
+                ShowResPage newP = new ShowResPage("ПОСТАЧАЛЬНИКИ", "providers");
                 try {
                     newP.show();
                 } catch (SQLException e1) {
@@ -125,7 +124,7 @@ public class ShowResPage extends WindowMenu {
         goodsOnStor.setLocation(frame.getWidth()/30,y);
         goodsOnStor.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
-                ShowResPage newP = new ShowResPage("ЗАПАСИ НА СКЛАДАХ", "goodsOnStor", dataBase);
+                ShowResPage newP = new ShowResPage("ЗАПАСИ НА СКЛАДАХ", "goodsOnStor");
                 try {
                     newP.show();
                 } catch (SQLException e1) {
@@ -142,7 +141,7 @@ public class ShowResPage extends WindowMenu {
         storages.setLocation(frame.getWidth()/30,y);
         storages.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
-                ShowResPage newP = new ShowResPage("СКЛАДИ", "regOfStor", dataBase);
+                ShowResPage newP = new ShowResPage("СКЛАДИ", "regOfStor");
                 try {
                     newP.show();
                 } catch (SQLException e1) {
@@ -159,7 +158,7 @@ public class ShowResPage extends WindowMenu {
         contracts.setLocation(frame.getWidth()/30,y);
         contracts.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
-                ShowResPage newP = new ShowResPage("УГОДИ", "contracts", dataBase);
+                ShowResPage newP = new ShowResPage("УГОДИ", "contracts");
                 try {
                     newP.show();
                 } catch (SQLException e1) {
@@ -187,7 +186,7 @@ public class ShowResPage extends WindowMenu {
                 frame.dispose();
                 AddItemPage add = null;
                 try {
-                    add = new AddItemPage(nameOfTable, nameInDB, dataBase);
+                    add = new AddItemPage(nameOfTable, nameInDB);
                 } catch (SQLException e1) {
                     e1.printStackTrace();
                 }
@@ -206,9 +205,10 @@ public class ShowResPage extends WindowMenu {
     }
 //вивести результат запиту на фрейм
     public void addDBTable(int x, int y, String query) throws SQLException {
+        DataBase db = new DataBase();
         int rowHeight=40;
         try {
-            ResultSet rs =  dataBase.select(query);
+            ResultSet rs =  db.select(query);
             int colCount = rs.getMetaData().getColumnCount();
             rs.last();
             lineCount = rs.getRow();
@@ -258,7 +258,7 @@ public class ShowResPage extends WindowMenu {
                     String q = "DELETE FROM " + nameInDB + " WHERE " + menu.get(0) + " = " + r.get(0) + ";";
                     System.out.println(q);
                     try {
-                        dataBase.delete(q);
+                        db.delete(q);
                     } catch (SQLException e1) {
                         e1.printStackTrace();
                     }
@@ -279,7 +279,7 @@ public class ShowResPage extends WindowMenu {
                     else scrollPane.setSize(frame.getWidth()-70,300);
                     frame.add(scrollPane);
                     frame.repaint();
-                    ShowResPage newP = new ShowResPage(nameOfTable, nameInDB, dataBase);
+                    ShowResPage newP = new ShowResPage(nameOfTable, nameInDB);
 
                 }
             });
@@ -287,5 +287,6 @@ public class ShowResPage extends WindowMenu {
         } catch (SQLException e) {
             e.printStackTrace();
         }
+        db.close();
     }
 }
