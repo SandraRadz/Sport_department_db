@@ -61,16 +61,21 @@ public class StartForm extends Window {
                 try {
                     System.out.println(query);
                     rs = db.select(query);
+                    if(!rs.next()){
+                        error.setText("Користувача з таким логіном не існує, спробуйте ще раз");
+                        return;
+                    }
                     rs.first();
                     System.out.println(rs.getString(4));
                     if(rs.getString(4).equals(password.getText())){
-
+                        User user = new User (rs.getString(1), rs.getString(2), rs.getString(3), rs.getString(4), rs.getString(5));
+                        Profile pr = new Profile(user);
                         ShowResPage ta = new ShowResPage("НАКЛАДНІ", "bill");
-                        ta.show();
+                        pr.show();
                         frame.dispose();
                     }
                     else{
-                        error.setText("Логін чи пароль введено не правильно, спробуйте ще раз");
+                        error.setText("Пароль введено не правильно, спробуйте ще раз");
                     }
                 } catch (SQLException e1) {
                     e1.printStackTrace();

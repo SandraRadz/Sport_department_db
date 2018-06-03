@@ -1,4 +1,5 @@
 import javax.swing.*;
+import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.sql.ResultSet;
@@ -19,30 +20,74 @@ public class WindowMenu extends Window {
         profile.setSize(90, 30);
         profile.setLocation(frame.getWidth()/2-120 , 20);
         frame.add(profile);
+        profile.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+
+            }
+        });
 
 
         JButton readme = new JButton("ЗВІТИ");
         readme.setSize(80, 30);
         readme.setLocation(profile.getX() + 130, 20);
         frame.add(readme);
+        readme.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+
+            }
+        });
 
         JButton tables = new JButton("ТАБЛИЦІ");
         tables.setSize(80, 30);
         tables.setLocation(readme.getX() + 110, 20);
         frame.add(tables);
-
+        tables.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                ShowResPage ta = new ShowResPage("НАКЛАДНІ", "bill");
+                try {
+                    ta.show();
+                } catch (SQLException e1) {
+                    e1.printStackTrace();
+                }
+                frame.dispose();
+            }
+        });
 
         JButton exit = new JButton("ВИХІД");
         exit.setSize(80, 30);
         exit.setLocation(tables.getX()+ 110, 20);
         frame.add(exit);
+        exit.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                StartForm sf = new StartForm();
+                try {
+                    sf.show();
+                } catch (SQLException e1) {
+                    e1.printStackTrace();
+                }
+                frame.dispose();
+
+            }
+        });
 
 
         JButton help = new JButton("ДОПОМОГА");
         help.setSize(120, 30);
+        help.setBackground(Color.red);
         help.setLocation(exit.getX()+ 110, 20);
         frame.add(help);
         frame.setVisible(true);
+        help.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                HelpPage hp = new HelpPage();
+                try {
+                    hp.show();
+                } catch (SQLException e1) {
+                    e1.printStackTrace();
+                }
+                frame.dispose();
+            }
+        });
     }
 
 }

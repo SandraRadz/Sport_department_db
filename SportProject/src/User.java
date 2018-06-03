@@ -8,12 +8,12 @@ public class User {
     private String password;
 
 
-    public User(String fname, String sname, String lname, String status, String email, String login, String password){
+    public User(String fname,  String lname, String status,  String login, String password){
         this.fname=fname;
-        this.sname=sname;
+        //this.sname=sname;
         this.lname=lname;
         this.status=status;
-        this.email=email;
+        //this.email=email;
         this.login=login;
         this.password=password;
         return;
