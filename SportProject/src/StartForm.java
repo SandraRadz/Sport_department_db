@@ -56,7 +56,7 @@ public class StartForm extends Window {
             public void actionPerformed(ActionEvent e) {
                 error.setText("");
                 DataBase db = new DataBase();
-                String query ="select * from users where login='"+login.getText()+"';";
+				String query = "select * from users where login='" + login.getText()+"';";
                 ResultSet rs;
                 try {
                     System.out.println(query);
