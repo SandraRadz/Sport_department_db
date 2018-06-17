@@ -3,6 +3,7 @@ import javax.swing.event.TableModelListener;
 import javax.swing.table.AbstractTableModel;
 import javax.swing.table.TableModel;
 import javax.xml.crypto.Data;
+
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -30,6 +31,8 @@ public class AddItemPage extends WindowMenu {
 	JComboBox cb, cb1, cb2;
 	Color or = new Color(246, 184, 61);
 	Color gr = new Color(6, 100, 1);
+
+ImageIcon image = new ImageIcon("D:/BD/sbd/Sport_department_db/SportProject/plus.png");
 
 	public AddItemPage(String nameT, String nameDB) throws SQLException {
 		super(nameT);
@@ -349,7 +352,7 @@ public class AddItemPage extends WindowMenu {
 		try {
 			while (res.next()) {
 				FKlist.add(res.getString(1));
-				System.out.println(res.getString(1));
+				//System.out.println(res.getString(1));
 			}
 		} catch (SQLException e1) {
 			e1.printStackTrace();
@@ -408,11 +411,12 @@ public class AddItemPage extends WindowMenu {
 	}
 
 	public void addsmallplusButton() {
-		JButton goodAddItem = new JButton(
-				"<html> <style type='text/css'>.plus{color: white; font-size:20; text-align:center;} </style><div class='plus'>+</div></html>");
+		JButton goodAddItem = new JButton(new ImageIcon(getClass().getResource("pictures/plus.png")));
+		//JButton goodAddItem = new JButton(
+		//		"<html> <style type='text/css'>.plus{color: white; font-size:20; text-align:left;} </style><div class='plus'>+</div></html>");
 		goodAddItem.setSize(25, 25);
 		goodAddItem.setLocation(lab.getX() + lab.getWidth() + 10, lab.getY() + 10);
-		goodAddItem.setBackground(gr);
+		//goodAddItem.setBackground(gr);
 
 		tableModel = new AbstractTableModel() {
 
@@ -510,8 +514,9 @@ public class AddItemPage extends WindowMenu {
 	}
 
 	public void addsmallremoveButton() {
-		JButton goodRemoveItem = new JButton(
-				"<html> <style type='text/css'>.plus{color: white; font-size:20; text-align:center;} </style><div class='plus'>-</div></html>");
+		JButton goodRemoveItem = new JButton(new ImageIcon(getClass().getResource("pictures/minus.png")));
+		//JButton goodRemoveItem = new JButton(
+		//		"<html> <style type='text/css'>.plus{color: white; font-size:20; text-align:center;} </style><div class='plus'>-</div></html>");
 		goodRemoveItem.setSize(25, 25);
 		goodRemoveItem.setLocation(lab.getX() + lab.getWidth() + 60, lab.getY() + 10);
 		goodRemoveItem.setBackground(Color.red);

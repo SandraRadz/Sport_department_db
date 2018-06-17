@@ -7,8 +7,9 @@ public class Main {
 
             public void run() {
                 StartForm startForm = new StartForm();
+                //ProvidersReport prrep = new ProvidersReport ("");
                 try {
-                    startForm.show();
+                	startForm.show();
                 } catch (SQLException e) {
                     e.printStackTrace();
                 }

@@ -35,7 +35,8 @@ public class StartForm extends Window {
         frame.add(pass);
         y+=height+10;
 
-        JTextField password = new JTextField();
+        JPasswordField password = new JPasswordField();
+        //JTextField password = new JTextField();
         password.setSize(width, height);
         password.setLocation(x, y);
         frame.add(password);
@@ -67,10 +68,10 @@ public class StartForm extends Window {
                     }
                     rs.first();
                     System.out.println(rs.getString(4));
-                    if(rs.getString(4).equals(password.getText())){
+                    if(rs.getString(5).equals(password.getText())){
                         User user = new User (rs.getString(1), rs.getString(2), rs.getString(3), rs.getString(4), rs.getString(5));
                         Profile pr = new Profile(user);
-                        ShowResPage ta = new ShowResPage("НАКЛАДНІ", "bill");
+                        //ShowResPage ta = new ShowResPage("НАКЛАДНІ", "bill");
                         pr.show();
                         frame.dispose();
                     }

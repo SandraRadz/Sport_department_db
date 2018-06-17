@@ -47,7 +47,7 @@ public class WindowMenu extends Window {
 		frame.add(readme);
 		readme.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				Report rep = new Report("ЗВІТИ");
+				ProvidersReport rep = new ProvidersReport("ЗВІТИ");
 				try {
 					rep.show();
 				} catch (SQLException e1) {
@@ -94,6 +94,7 @@ public class WindowMenu extends Window {
 		help.setSize(120, 30);
 		help.setBackground(Color.red);
 		help.setLocation(exit.getX() + 110, 20);
+		help.setForeground(Color.white);
 		frame.add(help);
 		frame.setVisible(true);
 		help.addActionListener(new ActionListener() {
