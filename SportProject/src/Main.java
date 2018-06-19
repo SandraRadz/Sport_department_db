@@ -6,10 +6,17 @@ public class Main {
         javax.swing.SwingUtilities.invokeLater(new Runnable() {
 
             public void run() {
-                StartForm startForm = new StartForm();
-                //ProvidersReport prrep = new ProvidersReport ("");
+                DataBase db = new DataBase();
+                db.addTables();
                 try {
-                	startForm.show();
+                    db.close();
+                } catch (SQLException e) {
+                    e.printStackTrace();
+                }
+                //BillsReport startForm = new BillsReport(null, null);
+               StartForm startForm = new StartForm();
+                try {
+                    startForm.show();
                 } catch (SQLException e) {
                     e.printStackTrace();
                 }

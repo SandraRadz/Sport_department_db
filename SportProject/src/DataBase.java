@@ -73,7 +73,7 @@ public class DataBase {
                     "MFI_bank VARCHAR(6) NOT NULL,"+
                     "PRIMARY KEY (account_id),"+
                     "CONSTRAINT FK_MFIBank FOREIGN KEY (MFI_bank) REFERENCES bank(MFI_bank) "+
-                    "ON DELETE CASCADE ON UPDATE CASCADE );";
+                    "ON DELETE NO ACTION ON UPDATE NO ACTION );";
             stmt.executeUpdate(query);
 
             query = "CREATE TABLE IF NOT EXISTS bill ("+
@@ -84,21 +84,21 @@ public class DataBase {
                     "provider_id VARCHAR(12) NOT NULL,"+
                     "account_id VARCHAR(16) NOT NULL,"+
                     "PRIMARY KEY (bill_id),"+
-                    "FOREIGN KEY (provider_id) REFERENCES providers(provider_id) ON DELETE NO ACTION ON UPDATE CASCADE,"+
-                    "FOREIGN KEY (account_id) REFERENCES accounts(account_id) ON DELETE NO ACTION ON UPDATE CASCADE);";
+                    "FOREIGN KEY (provider_id) REFERENCES providers(provider_id) ON DELETE NO ACTION ON UPDATE NO ACTION,"+
+                    "FOREIGN KEY (account_id) REFERENCES accounts(account_id) ON DELETE NO ACTION ON UPDATE NO ACTION);";
             stmt.executeUpdate(query);
 
 
             query = "CREATE TABLE IF NOT EXISTS goodsOnStor(\n" +
                     "                    goods_on_storages_id INT NOT NULL ,\n" +
                     "                    name_of_goods CHAR(50) NOT NULL,\n" +
-                    "                    amount CHAR(50) NOT NULL,\n" +
+                    "                    amount REAL NOT NULL,\n" +
                     "                    summ REAL NOT NULL,\n" +
                     "                    bill_id INT NOT NULL,\n" +
                     "                    name_of_storage VARCHAR(50) NOT NULL,\n" +
                     "                    PRIMARY KEY (goods_on_storages_id),\n" +
-                    "                    FOREIGN KEY (bill_id) REFERENCES bill(bill_id) ON DELETE NO ACTION ON UPDATE CASCADE,\n" +
-                    "                    FOREIGN KEY (name_of_storage) REFERENCES regOfStor(name_of_storage) ON DELETE NO ACTION ON UPDATE CASCADE\n" +
+                    "                    FOREIGN KEY (bill_id) REFERENCES bill(bill_id) ON DELETE NO ACTION ON UPDATE NO ACTION,\n" +
+                    "                    FOREIGN KEY (name_of_storage) REFERENCES regOfStor(name_of_storage) ON DELETE NO ACTION ON UPDATE NO ACTION\n" +
                     "            );";
             stmt.executeUpdate(query);
 
@@ -106,14 +106,14 @@ public class DataBase {
                     "  bill_det_id INT NOT NULL ,\n" +
                     "  name_of_goods CHAR(70) NOT NULL,\n" +
                     "  price_per_unit REAL NOT NULL,\n" +
-                    "  amount INT NOT NULL,\n" +
+                    "  amount REAL NOT NULL,\n" +
                     "  summ REAL NOT NULL,\n" +
                     "  VAT REAL,\n" +
                     "  sum_VAT REAL,\n" +
                     "  bill_id INT NOT NULL,\n" +
                     "  PRIMARY KEY (bill_det_id),\n" +
-                    "  FOREIGN KEY (name_of_goods) REFERENCES nomenOfDel(name_of_goods) ON DELETE NO ACTION ON UPDATE CASCADE,\n" +
-                    "  FOREIGN KEY (bill_id) REFERENCES bill(bill_id) ON DELETE NO ACTION ON UPDATE CASCADE\n" +
+                    "  FOREIGN KEY (name_of_goods) REFERENCES nomenOfDel(name_of_goods) ON DELETE NO ACTION ON UPDATE NO ACTION,\n" +
+                    "  FOREIGN KEY (bill_id) REFERENCES bill(bill_id) ON DELETE NO ACTION ON UPDATE NO ACTION\n" +
                     ");";
             stmt.executeUpdate(query);
 
@@ -122,8 +122,8 @@ public class DataBase {
                     "  bill_det_id INT NOT NULL,\n" +
                     "  goods_on_storages_id INT NOT NULL,\n" +
                     "  PRIMARY KEY (id),\n" +
-                    "  FOREIGN KEY (bill_det_id) REFERENCES billDet(bill_det_id) ON DELETE CASCADE ON UPDATE CASCADE,\n" +
-                    "  FOREIGN KEY (goods_on_storages_id) REFERENCES goodsOnStor(goods_on_storages_id) ON DELETE CASCADE ON UPDATE CASCADE\n" +
+                    "  FOREIGN KEY (bill_det_id) REFERENCES billDet(bill_det_id) ON DELETE NO ACTION ON UPDATE NO ACTION,\n" +
+                    "  FOREIGN KEY (goods_on_storages_id) REFERENCES goodsOnStor(goods_on_storages_id) ON DELETE NO ACTION ON UPDATE NO ACTION\n" +
                     ");";
             stmt.executeUpdate(query);
 
@@ -134,8 +134,8 @@ public class DataBase {
                     "  date_from DATE NOT NULL,\n" +
                     "  date_to DATE NOT NULL,\n" +
                     "  PRIMARY KEY (contracts_id),\n" +
-                    "  FOREIGN KEY (provider_id) REFERENCES providers(provider_id) ON DELETE NO ACTION ON UPDATE CASCADE,\n" +
-                    "  FOREIGN KEY (name_of_goods) REFERENCES nomenOfDel(name_of_goods) ON DELETE NO ACTION ON UPDATE CASCADE\n" +
+                    "  FOREIGN KEY (provider_id) REFERENCES providers(provider_id) ON DELETE NO ACTION ON UPDATE NO ACTION,\n" +
+                    "  FOREIGN KEY (name_of_goods) REFERENCES nomenOfDel(name_of_goods) ON DELETE NO ACTION ON UPDATE NO ACTION\n" +
                     ");";
             stmt.executeUpdate(query);
 
@@ -161,6 +161,12 @@ public class DataBase {
         } catch (SQLException e) {
             e.printStackTrace();
         }
+    }
+
+    public ResultSet getPK(String tableName) throws SQLException {
+        DatabaseMetaData metaData = con.getMetaData();
+        rs = metaData.getPrimaryKeys(null, null, tableName);
+        return rs;
     }
 
     public ResultSet select(String what, String from, String where) throws SQLException {//select from... query

@@ -36,7 +36,6 @@ public class StartForm extends Window {
         y+=height+10;
 
         JPasswordField password = new JPasswordField();
-        //JTextField password = new JTextField();
         password.setSize(width, height);
         password.setLocation(x, y);
         frame.add(password);

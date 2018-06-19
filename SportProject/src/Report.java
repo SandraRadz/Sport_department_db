@@ -19,13 +19,15 @@ public class Report extends WindowMenu {
 	// private DataBase dataBase;
 	// private String query;
 	protected String nameInDB;
+	private User user;
 	JTable table;
 	JScrollPane scrollPane;
 	int lineCount;
 	// Vector r, v;
 
-	public Report(String nameT) {
-		super(nameT);
+	public Report(String nameT, User user) {
+		super(nameT, user);
+		this.user=user;
 		// this.nameInDB=nameDB;
 		// this.query="select * from "+this.nameInDB +";";
 	}
@@ -44,12 +46,12 @@ public class Report extends WindowMenu {
 		frame.add(repOf);
 		y += 50;
 
-		JButton contracts = new JButton("КОНТРАКТАМ");
+		JButton contracts = new JButton("УГОДАМ");
 		contracts.setSize(150, 30);
 		contracts.setLocation(frame.getWidth() / 30, y);
 		contracts.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				ContractsReport newCrRep = new ContractsReport("ЗВІТИ ПО КОНТРАКТАМ");
+				ContractsReport newCrRep = new ContractsReport("ЗВІТИ ПО КОНТРАКТАМ",user);
 				try {
 					newCrRep.show();
 				} catch (SQLException e1) {
@@ -67,7 +69,7 @@ public class Report extends WindowMenu {
 		bills.setLocation(frame.getWidth() / 30, y);
 		bills.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				BillsReport newBlRep = new BillsReport("ЗВІТИ ПО НАКЛАДНИМ");
+				BillsReport newBlRep = new BillsReport("ЗВІТИ ПО НАКЛАДНИМ",user);
 				try {
 					newBlRep.show();
 				} catch (SQLException e1) {
@@ -84,7 +86,7 @@ public class Report extends WindowMenu {
 		goods.setLocation(frame.getWidth() / 30, y);
 		goods.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				GoodsReport newGdRep = new GoodsReport("ЗВІТИ ПО ТОВАРАМ");
+				GoodsReport newGdRep = new GoodsReport("ЗВІТИ ПО ТОВАРАМ",user);
 				try {
 					newGdRep.show();
 				} catch (SQLException e1) {
@@ -101,7 +103,7 @@ public class Report extends WindowMenu {
 		providers.setLocation(frame.getWidth() / 30, y);
 		providers.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				ProvidersReport newPrRep = new ProvidersReport("ЗВІТИ ПО ПОСТАЧАЛЬНИКАМ");
+				ProvidersReport newPrRep = new ProvidersReport("ЗВІТИ ПО ПОСТАЧАЛЬНИКАМ", user);
 				try {
 					newPrRep.show();
 				} catch (SQLException e1) {

@@ -30,9 +30,9 @@ public class Window {
 	public void show() throws SQLException {
 		frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
-		frame.setSize(1000, 750);
-		frame.setResizable(false);
+		frame.setSize(1100, 750);
 		frame.setLayout(null);
 		frame.setVisible(true);
+		frame.setResizable(false);
 	}
 }

@@ -4,8 +4,15 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
+import java.io.IOException;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.time.format.DateTimeFormatter;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.Locale;
 import java.util.Vector;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
@@ -16,20 +23,25 @@ import javax.swing.JTable;
 import javax.swing.JTextField;
 import javax.swing.SwingConstants;
 
+import com.toedter.calendar.JCalendar;
+import com.toedter.calendar.JDateChooser;
+
 public class ProvidersReport extends Report {
 	private DataBase dataBase;
 	private String query;
 	private ResultSet rs;
 	private JButton OK, OK1, OK2;
+	private JButton report1,report2,report3,report4;
 	private JComboBox cb;
-	private JTextField from, to, sum, town;
+	private JTextField sum, town;
 	private JScrollPane mainScroll;
 	private JPanel mainPanel = new JPanel();
 	private JTable table;
 	private JScrollPane scrollPane, scrollPane1, scrollPane2, scrollPane3;
+	private JTable table1,table2,table3,table4;
 
-	public ProvidersReport(String nameT) {
-		super(nameT);
+	public ProvidersReport(String nameT, User user) {
+		super(nameT, user);
 	}
 
 	public void show() throws SQLException {
@@ -37,7 +49,6 @@ public class ProvidersReport extends Report {
 		DataBase db = new DataBase();
 		this.query = "select * from providers;";
 		this.rs = db.select(query);
-
 		JLabel repOf = new JLabel("Звіти по Постачальникам:", SwingConstants.CENTER);
 		repOf.setFont(new Font("", Font.ITALIC, 30));
 		repOf.setSize(400, 30);
@@ -56,7 +67,6 @@ public class ProvidersReport extends Report {
 		rep1.setLocation(x + plus, y + plus);
 
 		cb = AddItemPage.createComboBox("name_of_goods", "nomenofdel", 200, 30, rep1.getWidth(), rep1.getY());
-		String q = "" + cb.getSelectedItem();
 		// перший виклик метода не показує таблицю,з'являється лише після
 		// натискання на інший айтем окрім першого
 		scrollPane = new JScrollPane();
@@ -72,39 +82,78 @@ public class ProvidersReport extends Report {
 				}
 			}
 		});
+		
+		report1 = new JButton("ЕКСПОРТ В Excel");
+		report1.setSize(150,30);
+		report1.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				String q = "" + cb.getSelectedItem();
+				String q1 = "Пост " + cb.getSelectedItem();
+			    String result = transliterate(q1);
+				try {
+					Export exp1 = new Export(table1,"Постачальники " + q,result);
+				} catch (IOException e1) {
+					e1.printStackTrace();
+				}
+			}
+		});
 
 		// другий звіт
 		JLabel rep2 = new JLabel(
-				"Переглянути всіх постачальників, в яких купувався товар в певний проміжок часу:  з                       по ");
+				"Переглянути всіх постачальників, в яких купувався товар в певний проміжок часу:");
 		rep2.setFont(new Font("", Font.PLAIN, 15));
 		rep2.setSize(700, 30);
-		rep2.setLocation(x + plus, rep1.getY() + 400 + between);
+		rep2.setLocation(x + plus, rep1.getY() + 350 + between );
+		
+		
+		JDateChooser calendar_from = new JDateChooser();
+		calendar_from.setCalendar(Calendar.getInstance());
+		calendar_from.setSize(100,30);
+		calendar_from.setLocation(rep2.getX() + 580, rep2.getY());
+		calendar_from.setDateFormatString("yyyy-MM-dd");
 
-		from = new JTextField("");
-		from.setSize(70, 30);
-		from.setLocation(rep2.getX() + 580, rep2.getY());
-
-		to = new JTextField();
-		to.setSize(70, 30);
-		to.setLocation(rep2.getX() + 700, rep2.getY());
-
+		JDateChooser calendar_to = new JDateChooser();
+		calendar_to.setCalendar(Calendar.getInstance());
+		calendar_to.setSize(100,30);
+		calendar_to.setLocation(calendar_from.getX() + 130, rep2.getY());
+		calendar_to.setDateFormatString("yyyy-MM-dd");
+		
+		String fromStr = calendar_from.getDate().toString();
+		String toStr = calendar_to.getDate().toString();
+		
 		OK = new JButton("ok");
 		OK.setSize(50, 30);
-		OK.setLocation(rep2.getX() + 800, rep2.getY());
-
-		String fromStr = from.getText();
-		String toStr = to.getText();
-		String query1 = "SELECT distinct contracts.provider_id,providers.name_of_provider,date_from,date_to,name_of_goods FROM providers inner join contracts on providers.provider_id=contracts.provider_id WHERE (date_from BETWEEN '"
-				+ fromStr + "' AND '" + toStr + "');";
+		OK.setLocation(calendar_to.getX() + 120, rep2.getY());
+		String query1 = "SELECT distinct contracts.provider_id,providers.name_of_provider,date_from,"
+				+ "date_to,name_of_goods FROM providers inner join contracts on providers.provider_id="
+				+ "contracts.provider_id WHERE contracts.date_to >= '"
+				+ toStr + "' and contracts.date_from <= '" + fromStr + "';";
 		scrollPane1 = new JScrollPane();
 		OK.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				try {
 					mainPanel.remove(scrollPane1);
-					String fromStr1 = from.getText();
-					String toStr1 = to.getText();
+					SimpleDateFormat format2 = new SimpleDateFormat("yyyy-MM-dd");
+				    String fromStr1 = format2.format(calendar_from.getDate());
+					String toStr1 = format2.format(calendar_to.getDate());
+					System.out.println(fromStr1);
+					System.out.println(toStr1);
 					providersByTime(x + plus, rep2.getY() + 30, query1, fromStr1, toStr1);
 				} catch (SQLException e1) {
+					e1.printStackTrace();
+				}
+			}
+		});
+		
+		report2 = new JButton("ЕКСПОРТ В Excel");
+		report2.setSize(150,30);
+		report2.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				String q1 = "Пост " + "За Датою";
+			    String result = transliterate(q1);
+				try {
+					Export exp1 = new Export(table2,"Постачальники",result);
+				} catch (IOException e1) {
 					e1.printStackTrace();
 				}
 			}
@@ -114,7 +163,7 @@ public class ProvidersReport extends Report {
 		JLabel rep3 = new JLabel("Переглянути всіх постачальників, в яких купувалися товари на певну суму : >= ");
 		rep3.setFont(new Font("", Font.PLAIN, 15));
 		rep3.setSize(700, 30);
-		rep3.setLocation(x + plus, rep2.getY() + 400 + between);
+		rep3.setLocation(x + plus, rep2.getY() + 350 + between);
 
 		sum = new JTextField("");
 		sum.setSize(70, 30);
@@ -140,12 +189,26 @@ public class ProvidersReport extends Report {
 				}
 			}
 		});
+		
+		report3 = new JButton("ЕКСПОРТ В Excel");
+		report3.setSize(150,30);
+		report3.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				String q1 = "Пост " + "За Сумою";
+			    String result = transliterate(q1);
+				try {
+					Export exp1 = new Export(table3,"Постачальники З Сумою",result);
+				} catch (IOException e1) {
+					e1.printStackTrace();
+				}
+			}
+		});
 
 		// четвертий звіт
 		JLabel rep4 = new JLabel("Переглянути всіх постачальників з певного міста : ");
 		rep4.setFont(new Font("", Font.PLAIN, 15));
 		rep4.setSize(700, 30);
-		rep4.setLocation(x + plus, rep3.getY() + 400 + between);
+		rep4.setLocation(x + plus,rep3.getY() + 350 + between );
 
 		town = new JTextField("");
 		town.setSize(70, 30);
@@ -170,6 +233,21 @@ public class ProvidersReport extends Report {
 				}
 			}
 		});
+		
+		report4 = new JButton("ЕКСПОРТ В Excel");
+		report4.setSize(150,30);
+		report4.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				String q1 = "Пост " + "З Міста";
+			    String result = transliterate(q1);
+				try {
+					Export exp1 = new Export(table4,"Постачальники З Міста",result);
+				} catch (IOException e1) {
+					e1.printStackTrace();
+				}
+			}
+		});
+		
 
 		// -----------------------------------------------------------------------
 		// ДОДАВАННЯ ВСІХ ЕЛЕМЕНТІВ НА ПАНЕЛЬ І НА СКРОЛПЕЙН | ДОДАВАННЯ НА
@@ -177,26 +255,37 @@ public class ProvidersReport extends Report {
 		// -----------------------------------------------------------------------
 		mainPanel.setLayout(null);
 		mainPanel.setVisible(true);
-		mainPanel.setPreferredSize(new Dimension(950, 1780));
+		mainPanel.setPreferredSize(new Dimension(950, 1600));
 
+		
+		
 		mainPanel.add(rep1);
 		mainPanel.add(cb);
 		mainPanel.add(rep2);
-		mainPanel.add(from);
-		mainPanel.add(to);
+		mainPanel.add(report1);
+		mainPanel.add(calendar_from);
+		mainPanel.add(calendar_to);
 		mainPanel.add(OK);
+		mainPanel.add(report2);
 		mainPanel.add(rep3);
 		mainPanel.add(sum);
 		mainPanel.add(OK1);
+		mainPanel.add(report3);
 		mainPanel.add(rep4);
 		mainPanel.add(town);
 		mainPanel.add(OK2);
+		mainPanel.add(report4);
 
 		mainScroll = new JScrollPane(mainPanel, JScrollPane.VERTICAL_SCROLLBAR_ALWAYS,
 				JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
 		mainScroll.setLocation(frame.getX() + 10, frame.getHeight() / 3 + 5);
 		mainScroll.setSize(frame.getWidth() - 20, 450);
-
+		
+		report1.setLocation(mainScroll.getWidth() - 200,rep2.getY() - 40);
+		report2.setLocation(mainScroll.getWidth() - 200,rep3.getY() - 40);
+		report3.setLocation(mainScroll.getWidth() - 200,rep4.getY() - 40);
+		report4.setLocation(mainScroll.getWidth() - 200,rep4.getY() + 340);
+		
 		frame.add(mainScroll);
 	}
 
@@ -215,8 +304,10 @@ public class ProvidersReport extends Report {
 	// метод для 2 запиту
 	public void providersByTime(int x, int y, String query1, String from, String to) throws SQLException {
 		DataBase db = new DataBase();
-		query1 = "SELECT distinct contracts.provider_id,providers.name_of_provider,date_from,date_to,name_of_goods FROM providers inner join contracts on providers.provider_id=contracts.provider_id WHERE (date_from BETWEEN '"
-				+ from + "' AND '" + to + "');";
+		query1 = "SELECT distinct contracts.provider_id,providers.name_of_provider,date_from,date_to,name_of_goods FROM providers inner join contracts on providers.provider_id=contracts.provider_id WHERE contracts.date_to >= '"
+				+ to + "' and contracts.date_from <= '" + from + "';";
+		System.out.println(from);
+		System.out.println(to);
 		paintTheTable(query1, x, y, db, 2);
 	}
 
@@ -269,6 +360,7 @@ public class ProvidersReport extends Report {
 			switch (check) {
 			case 1:
 				table = new JTable(res, menu);
+				table1 = table;
 				scrollPane = new JScrollPane(table);
 				scrollPane.setLocation(x, y + 10);
 				table.setRowHeight(rowHeight);
@@ -281,6 +373,7 @@ public class ProvidersReport extends Report {
 				break;
 			case 2:
 				table = new JTable(res, menu);
+				table2 = table;
 				scrollPane1 = new JScrollPane(table);
 				scrollPane1.setLocation(x, y + 10);
 				table.setRowHeight(rowHeight);
@@ -293,6 +386,7 @@ public class ProvidersReport extends Report {
 				break;
 			case 3:
 				table = new JTable(res, menu);
+				table3 = table;
 				scrollPane2 = new JScrollPane(table);
 				scrollPane2.setLocation(x, y + 10);
 				table.setRowHeight(rowHeight);
@@ -305,6 +399,7 @@ public class ProvidersReport extends Report {
 				break;
 			case 4:
 				table = new JTable(res, menu);
+				table4 = table;
 				scrollPane3 = new JScrollPane(table);
 				scrollPane3.setLocation(x, y + 10);
 				table.setRowHeight(rowHeight);
@@ -319,5 +414,19 @@ public class ProvidersReport extends Report {
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
+	}
+	
+	public static String transliterate(String message){
+	    char[] abcCyr =   {' ','а','б','в','г','д','е','ж','з','і','й','к','л','м','н','о','п','р','с','т','у','ф','х', 'ц','ч', 'ш','щ','є', 'ю','я','А','Б','В','Г','Д','Е','Ж','З','И','Й','К','Л','М','Н','О','П','Р','С','Т','У','Ф','Х', 'Ц', 'Ч','Ш', 'Щ','Є','Ю','Я','a','b','c','d','e','f','g','h','i','j','k','l','m','n','o','p','q','r','s','t','u','v','w','x','y','z','A','B','C','D','E','F','G','H','I','J','K','L','M','N','O','P','Q','R','S','T','U','V','W','X','Y','Z'};
+	    String[] abcLat = {"_","a","b","v","g","d","e","zh","z","i","y","k","l","m","n","o","p","r","s","t","u","f","h","ts","ch","sh","sch","e","ju","ja","A","B","V","G","D","E","Zh","Z","I","Y","K","L","M","N","O","P","R","S","T","U","F","H","Ts","Ch","Sh","Sch","E","Ju","Ja","a","b","c","d","e","f","g","h","i","j","k","l","m","n","o","p","q","r","s","t","u","v","w","x","y","z","A","B","C","D","E","F","G","H","I","J","K","L","M","N","O","P","Q","R","S","T","U","V","W","X","Y","Z"};
+	    StringBuilder builder = new StringBuilder();
+	    for (int i = 0; i < message.length(); i++) {
+	        for (int x = 0; x < abcCyr.length; x++ ) {
+	            if (message.charAt(i) == abcCyr[x]) {
+	                builder.append(abcLat[x]);
+	            }
+	        }
+	    }
+	    return builder.toString();
 	}
 }

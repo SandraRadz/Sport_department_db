@@ -25,15 +25,15 @@ public class Profile extends WindowMenu {
 		return stars;
 	}
 
-	public Profile(User user) {
-		super("ПРОФІЛЬ");
-		this.fname = user.getFname();
-		this.lname = user.getLname();
-		this.status = user.getStatus();
-		this.login = user.getLogin();
-		this.password = user.getPassword();
-		return;
-	}
+	public Profile(User user){
+        super("ПРОФІЛЬ", user);
+        this.fname=user.getFname();
+        this.lname=user.getLname();
+        this.status=user.getStatus();
+        this.login=user.getLogin();
+        this.password=user.getPassword();
+        return;
+    }
 
 	@Override
 	public void show() throws SQLException {
