@@ -2,6 +2,7 @@ import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.IOException;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.text.SimpleDateFormat;
@@ -22,12 +23,12 @@ import com.toedter.calendar.JDateChooser;
 
 public class ContractsReport extends Report {
 	private DataBase dataBase;
-	private JButton OK, OK1;
+	private JButton OK, OK1,report1;
 	private ResultSet rs;
 	private JComboBox cb;
 	private JScrollPane mainScroll;
 	private JPanel mainPanel = new JPanel();
-	private JTable table;
+	private JTable table,table1;
 	private JScrollPane scrollPane1, scrollPane2;
 
 	public ContractsReport(String nameT, User user) {
@@ -64,26 +65,26 @@ public class ContractsReport extends Report {
 
 		JDateChooser calendar_from = new JDateChooser();
 		calendar_from.setCalendar(Calendar.getInstance());
-		calendar_from.setSize(100,30);
+		calendar_from.setSize(100, 30);
 		calendar_from.setLocation(rep1h.getX() + 150, rep1h.getY() + 5);
 		calendar_from.setDateFormatString("yyyy-MM-dd");
-		
+
 		JLabel rep1p = new JLabel("по");
 		rep1p.setFont(new Font("", Font.PLAIN, 16));
 		rep1p.setSize(30, 30);
 		rep1p.setLocation(calendar_from.getX() + 110, rep1h.getY());
 
-		JDateChooser calendar_to= new JDateChooser();
+		JDateChooser calendar_to = new JDateChooser();
 		calendar_to.setCalendar(Calendar.getInstance());
-		calendar_to.setSize(100,30);
+		calendar_to.setSize(100, 30);
 		calendar_to.setLocation(calendar_from.getX() + 130, rep1h.getY() + 5);
 		calendar_to.setDateFormatString("yyyy-MM-dd");
-	
-		//SimpleDateFormat format2 = new SimpleDateFormat("yyyy-MM-dd");
-		
+
+		// SimpleDateFormat format2 = new SimpleDateFormat("yyyy-MM-dd");
+
 		String fromStr = calendar_from.getDate().toString();
 		String toStr = calendar_to.getDate().toString();
-		
+
 		String prov = "" + cb.getSelectedItem();
 
 		String query = "Select contracts.contracts_id,providers.provider_id,contracts.date_from,"
@@ -107,7 +108,7 @@ public class ContractsReport extends Report {
 					String from = format2.format(calendar_from.getDate());
 					String to = format2.format(calendar_to.getDate());
 					String prov = "" + cb.getSelectedItem();
-					
+
 					System.out.println(from);
 					System.out.println(to);
 
@@ -121,6 +122,23 @@ public class ContractsReport extends Report {
 		OK1 = new JButton("За весь період");
 		OK1.setSize(125, 30);
 		OK1.setLocation(rep1h.getX(), rep1h.getY() + 30);
+		
+		report1 = new JButton("ЕКСПОРТ В Excel");
+		report1.setSize(150, 30);
+		report1.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				SimpleDateFormat format2 = new SimpleDateFormat("yyyy-MM-dd");
+				String from = format2.format(calendar_from.getDate());
+				String to = format2.format(calendar_to.getDate());
+				String prov = "" + cb.getSelectedItem();
+				String q1 = "Контр За " + from + " - "+ to+ " Від " + prov; 
+				try {
+					Export exp1 = new Export(table1, "Контракти за " + from + " - " + to + " від " + prov, q1);
+				} catch (IOException e1) {
+					e1.printStackTrace();
+				}
+			}
+		});
 
 		/*
 		 * OK1.addActionListener(new ActionListener() {
@@ -144,11 +162,15 @@ public class ContractsReport extends Report {
 		mainPanel.add(calendar_from);
 		mainPanel.add(calendar_to);
 		mainPanel.add(OK);
+		
+		mainPanel.add(report1);
 
 		mainScroll = new JScrollPane(mainPanel, JScrollPane.VERTICAL_SCROLLBAR_ALWAYS,
 				JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
 		mainScroll.setLocation(frame.getX() + 10, frame.getHeight() / 3 + 5);
 		mainScroll.setSize(frame.getWidth() - 20, 450);
+		
+		report1.setLocation(mainScroll.getWidth() - 200, rep1.getY() + 400);
 
 		frame.add(mainScroll);
 	}
@@ -194,6 +216,8 @@ public class ContractsReport extends Report {
 			switch (check) {
 			case 1:
 				table = new JTable(res, menu);
+				table1 = table;
+				table1.setEnabled(false);
 				scrollPane = new JScrollPane(table);
 				scrollPane.setLocation(x, y + 10);
 				table.setRowHeight(rowHeight);

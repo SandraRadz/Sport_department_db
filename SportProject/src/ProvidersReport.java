@@ -7,12 +7,8 @@ import java.awt.event.ItemListener;
 import java.io.IOException;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.text.DateFormat;
 import java.text.SimpleDateFormat;
-import java.time.format.DateTimeFormatter;
 import java.util.Calendar;
-import java.util.Date;
-import java.util.Locale;
 import java.util.Vector;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
@@ -22,8 +18,6 @@ import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.JTextField;
 import javax.swing.SwingConstants;
-
-import com.toedter.calendar.JCalendar;
 import com.toedter.calendar.JDateChooser;
 
 public class ProvidersReport extends Report {
@@ -31,14 +25,14 @@ public class ProvidersReport extends Report {
 	private String query;
 	private ResultSet rs;
 	private JButton OK, OK1, OK2;
-	private JButton report1,report2,report3,report4;
+	private JButton report1, report2, report3, report4;
 	private JComboBox cb;
 	private JTextField sum, town;
 	private JScrollPane mainScroll;
 	private JPanel mainPanel = new JPanel();
 	private JTable table;
 	private JScrollPane scrollPane, scrollPane1, scrollPane2, scrollPane3;
-	private JTable table1,table2,table3,table4;
+	private JTable table1, table2, table3, table4;
 
 	public ProvidersReport(String nameT, User user) {
 		super(nameT, user);
@@ -82,16 +76,15 @@ public class ProvidersReport extends Report {
 				}
 			}
 		});
-		
+
 		report1 = new JButton("ЕКСПОРТ В Excel");
-		report1.setSize(150,30);
+		report1.setSize(150, 30);
 		report1.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				String q = "" + cb.getSelectedItem();
 				String q1 = "Пост " + cb.getSelectedItem();
-			    String result = transliterate(q1);
 				try {
-					Export exp1 = new Export(table1,"Постачальники " + q,result);
+					Export exp1 = new Export(table1, "Постачальники " + q, q1);
 				} catch (IOException e1) {
 					e1.printStackTrace();
 				}
@@ -99,42 +92,40 @@ public class ProvidersReport extends Report {
 		});
 
 		// другий звіт
-		JLabel rep2 = new JLabel(
-				"Переглянути всіх постачальників, в яких купувався товар в певний проміжок часу:");
+		JLabel rep2 = new JLabel("Переглянути всіх постачальників, в яких купувався товар в певний проміжок часу:");
 		rep2.setFont(new Font("", Font.PLAIN, 15));
 		rep2.setSize(700, 30);
-		rep2.setLocation(x + plus, rep1.getY() + 350 + between );
-		
-		
+		rep2.setLocation(x + plus, rep1.getY() + 350 + between);
+
 		JDateChooser calendar_from = new JDateChooser();
 		calendar_from.setCalendar(Calendar.getInstance());
-		calendar_from.setSize(100,30);
+		calendar_from.setSize(100, 30);
 		calendar_from.setLocation(rep2.getX() + 580, rep2.getY());
 		calendar_from.setDateFormatString("yyyy-MM-dd");
 
 		JDateChooser calendar_to = new JDateChooser();
 		calendar_to.setCalendar(Calendar.getInstance());
-		calendar_to.setSize(100,30);
+		calendar_to.setSize(100, 30);
 		calendar_to.setLocation(calendar_from.getX() + 130, rep2.getY());
 		calendar_to.setDateFormatString("yyyy-MM-dd");
-		
+
 		String fromStr = calendar_from.getDate().toString();
 		String toStr = calendar_to.getDate().toString();
-		
+
 		OK = new JButton("ok");
 		OK.setSize(50, 30);
 		OK.setLocation(calendar_to.getX() + 120, rep2.getY());
 		String query1 = "SELECT distinct contracts.provider_id,providers.name_of_provider,date_from,"
 				+ "date_to,name_of_goods FROM providers inner join contracts on providers.provider_id="
-				+ "contracts.provider_id WHERE contracts.date_to >= '"
-				+ toStr + "' and contracts.date_from <= '" + fromStr + "';";
+				+ "contracts.provider_id WHERE contracts.date_to >= '" + toStr + "' and contracts.date_from <= '"
+				+ fromStr + "';";
 		scrollPane1 = new JScrollPane();
 		OK.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				try {
 					mainPanel.remove(scrollPane1);
 					SimpleDateFormat format2 = new SimpleDateFormat("yyyy-MM-dd");
-				    String fromStr1 = format2.format(calendar_from.getDate());
+					String fromStr1 = format2.format(calendar_from.getDate());
 					String toStr1 = format2.format(calendar_to.getDate());
 					System.out.println(fromStr1);
 					System.out.println(toStr1);
@@ -144,15 +135,14 @@ public class ProvidersReport extends Report {
 				}
 			}
 		});
-		
+
 		report2 = new JButton("ЕКСПОРТ В Excel");
-		report2.setSize(150,30);
+		report2.setSize(150, 30);
 		report2.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				String q1 = "Пост " + "За Датою";
-			    String result = transliterate(q1);
 				try {
-					Export exp1 = new Export(table2,"Постачальники",result);
+					Export exp1 = new Export(table2, "Постачальники", q1);
 				} catch (IOException e1) {
 					e1.printStackTrace();
 				}
@@ -189,15 +179,15 @@ public class ProvidersReport extends Report {
 				}
 			}
 		});
-		
+
 		report3 = new JButton("ЕКСПОРТ В Excel");
-		report3.setSize(150,30);
+		report3.setSize(150, 30);
 		report3.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				String q1 = "Пост " + "За Сумою";
-			    String result = transliterate(q1);
+
 				try {
-					Export exp1 = new Export(table3,"Постачальники З Сумою",result);
+					Export exp1 = new Export(table3, "Постачальники З Сумою", q1);
 				} catch (IOException e1) {
 					e1.printStackTrace();
 				}
@@ -208,7 +198,7 @@ public class ProvidersReport extends Report {
 		JLabel rep4 = new JLabel("Переглянути всіх постачальників з певного міста : ");
 		rep4.setFont(new Font("", Font.PLAIN, 15));
 		rep4.setSize(700, 30);
-		rep4.setLocation(x + plus,rep3.getY() + 350 + between );
+		rep4.setLocation(x + plus, rep3.getY() + 350 + between);
 
 		town = new JTextField("");
 		town.setSize(70, 30);
@@ -233,21 +223,19 @@ public class ProvidersReport extends Report {
 				}
 			}
 		});
-		
+
 		report4 = new JButton("ЕКСПОРТ В Excel");
-		report4.setSize(150,30);
+		report4.setSize(150, 30);
 		report4.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				String q1 = "Пост " + "З Міста";
-			    String result = transliterate(q1);
 				try {
-					Export exp1 = new Export(table4,"Постачальники З Міста",result);
+					Export exp1 = new Export(table4, "Постачальники З Міста", q1);
 				} catch (IOException e1) {
 					e1.printStackTrace();
 				}
 			}
 		});
-		
 
 		// -----------------------------------------------------------------------
 		// ДОДАВАННЯ ВСІХ ЕЛЕМЕНТІВ НА ПАНЕЛЬ І НА СКРОЛПЕЙН | ДОДАВАННЯ НА
@@ -257,8 +245,6 @@ public class ProvidersReport extends Report {
 		mainPanel.setVisible(true);
 		mainPanel.setPreferredSize(new Dimension(950, 1600));
 
-		
-		
 		mainPanel.add(rep1);
 		mainPanel.add(cb);
 		mainPanel.add(rep2);
@@ -280,12 +266,12 @@ public class ProvidersReport extends Report {
 				JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
 		mainScroll.setLocation(frame.getX() + 10, frame.getHeight() / 3 + 5);
 		mainScroll.setSize(frame.getWidth() - 20, 450);
-		
-		report1.setLocation(mainScroll.getWidth() - 200,rep2.getY() - 40);
-		report2.setLocation(mainScroll.getWidth() - 200,rep3.getY() - 40);
-		report3.setLocation(mainScroll.getWidth() - 200,rep4.getY() - 40);
-		report4.setLocation(mainScroll.getWidth() - 200,rep4.getY() + 340);
-		
+
+		report1.setLocation(mainScroll.getWidth() - 200, rep2.getY() - 40);
+		report2.setLocation(mainScroll.getWidth() - 200, rep3.getY() - 40);
+		report3.setLocation(mainScroll.getWidth() - 200, rep4.getY() - 40);
+		report4.setLocation(mainScroll.getWidth() - 200, rep4.getY() + 340);
+
 		frame.add(mainScroll);
 	}
 
@@ -351,6 +337,7 @@ public class ProvidersReport extends Report {
 			for (int i = 0; i < lineCount; i++) {
 				rs.next();
 				for (int j = 0; j < colCount; j++) {
+
 					row.add(rs.getString(j + 1));
 				}
 				help[i] = (Vector) row.clone();
@@ -361,6 +348,7 @@ public class ProvidersReport extends Report {
 			case 1:
 				table = new JTable(res, menu);
 				table1 = table;
+				table1.setEnabled(false);
 				scrollPane = new JScrollPane(table);
 				scrollPane.setLocation(x, y + 10);
 				table.setRowHeight(rowHeight);
@@ -374,6 +362,7 @@ public class ProvidersReport extends Report {
 			case 2:
 				table = new JTable(res, menu);
 				table2 = table;
+				table2.setEnabled(false);
 				scrollPane1 = new JScrollPane(table);
 				scrollPane1.setLocation(x, y + 10);
 				table.setRowHeight(rowHeight);
@@ -387,6 +376,7 @@ public class ProvidersReport extends Report {
 			case 3:
 				table = new JTable(res, menu);
 				table3 = table;
+				table3.setEnabled(false);
 				scrollPane2 = new JScrollPane(table);
 				scrollPane2.setLocation(x, y + 10);
 				table.setRowHeight(rowHeight);
@@ -400,6 +390,7 @@ public class ProvidersReport extends Report {
 			case 4:
 				table = new JTable(res, menu);
 				table4 = table;
+				table4.setEnabled(false);
 				scrollPane3 = new JScrollPane(table);
 				scrollPane3.setLocation(x, y + 10);
 				table.setRowHeight(rowHeight);
@@ -415,18 +406,8 @@ public class ProvidersReport extends Report {
 			e.printStackTrace();
 		}
 	}
-	
-	public static String transliterate(String message){
-	    char[] abcCyr =   {' ','а','б','в','г','д','е','ж','з','і','й','к','л','м','н','о','п','р','с','т','у','ф','х', 'ц','ч', 'ш','щ','є', 'ю','я','А','Б','В','Г','Д','Е','Ж','З','И','Й','К','Л','М','Н','О','П','Р','С','Т','У','Ф','Х', 'Ц', 'Ч','Ш', 'Щ','Є','Ю','Я','a','b','c','d','e','f','g','h','i','j','k','l','m','n','o','p','q','r','s','t','u','v','w','x','y','z','A','B','C','D','E','F','G','H','I','J','K','L','M','N','O','P','Q','R','S','T','U','V','W','X','Y','Z'};
-	    String[] abcLat = {"_","a","b","v","g","d","e","zh","z","i","y","k","l","m","n","o","p","r","s","t","u","f","h","ts","ch","sh","sch","e","ju","ja","A","B","V","G","D","E","Zh","Z","I","Y","K","L","M","N","O","P","R","S","T","U","F","H","Ts","Ch","Sh","Sch","E","Ju","Ja","a","b","c","d","e","f","g","h","i","j","k","l","m","n","o","p","q","r","s","t","u","v","w","x","y","z","A","B","C","D","E","F","G","H","I","J","K","L","M","N","O","P","Q","R","S","T","U","V","W","X","Y","Z"};
-	    StringBuilder builder = new StringBuilder();
-	    for (int i = 0; i < message.length(); i++) {
-	        for (int x = 0; x < abcCyr.length; x++ ) {
-	            if (message.charAt(i) == abcCyr[x]) {
-	                builder.append(abcLat[x]);
-	            }
-	        }
-	    }
-	    return builder.toString();
+
+	public boolean isCellEditable(int row, int column) {
+		return false;
 	}
 }

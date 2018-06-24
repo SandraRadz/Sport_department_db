@@ -4,6 +4,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
+import java.io.IOException;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.text.SimpleDateFormat;
@@ -26,14 +27,17 @@ import com.toedter.calendar.JDateChooser;
 public class BillsReport extends Report {
 
 	private DataBase dataBase;
-	private JButton OK, OK1, all,OK2,OK3;
+	private JButton OK, OK1, all, OK2, OK3;
+	private JButton report1, report2, report3, report4, report5;
 	private ResultSet rs;
 	private JComboBox cb, cb1, cb2, cb3;
-	private JTextField more,less;
+	private JTextField more, less;
 	private JScrollPane mainScroll;
 	private JPanel mainPanel = new JPanel();
 	private JTable table;
+	private JTable table1, table2, table3, table4, table5;
 	private JScrollPane scrollPane1, scrollPane2, scrollPane3, scrollPane4, scrollPane5;
+	private boolean flag;
 
 	public BillsReport(String nameT, User user) {
 		super(nameT, user);
@@ -64,8 +68,8 @@ public class BillsReport extends Report {
 		scrollPane1 = new JScrollPane();
 		String query = "select distinct bill.bill_id,bill.date_of_bill,providers.name_of_provider,"
 				+ "billdet.name_of_goods FROM providers inner join (bill inner join billdet on bill.bill_id = "
-				+ "billdet.bill_id) on providers.provider_id = bill.provider_id where billdet.name_of_goods = "
-				+ q + ";";
+				+ "billdet.bill_id) on providers.provider_id = bill.provider_id where billdet.name_of_goods = " + q
+				+ ";";
 		cb.addItemListener(new ItemListener() {
 			public void itemStateChanged(ItemEvent arg0) {
 				try {
@@ -81,6 +85,20 @@ public class BillsReport extends Report {
 			}
 		});
 
+		report1 = new JButton("ЕКСПОРТ В Excel");
+		report1.setSize(150, 30);
+		report1.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				String q = "" + cb.getSelectedItem();
+				String q1 = "Накл " + q;
+				try {
+					Export exp1 = new Export(table1, "Накладні " + q, q1);
+				} catch (IOException e1) {
+					e1.printStackTrace();
+				}
+			}
+		});
+
 		// другий звіт
 		JLabel rep2 = new JLabel("Переглянути всі накладні за певний період:");
 		rep2.setFont(new Font("", Font.PLAIN, 15));
@@ -89,16 +107,16 @@ public class BillsReport extends Report {
 
 		JDateChooser calendar_from = new JDateChooser();
 		calendar_from.setCalendar(Calendar.getInstance());
-		calendar_from.setSize(100,30);
+		calendar_from.setSize(100, 30);
 		calendar_from.setLocation(rep2.getWidth() + 50, rep2.getY());
 		calendar_from.setDateFormatString("yyyy-MM-dd");
-		
+
 		JDateChooser calendar_to = new JDateChooser();
 		calendar_to.setCalendar(Calendar.getInstance());
-		calendar_to.setSize(100,30);
+		calendar_to.setSize(100, 30);
 		calendar_to.setLocation(calendar_from.getX() + 130, rep2.getY());
 		calendar_to.setDateFormatString("yyyy-MM-dd");
-		
+
 		String fromStr = calendar_from.getDate().toString();
 		String toStr = calendar_to.getDate().toString();
 
@@ -120,6 +138,22 @@ public class BillsReport extends Report {
 
 					BillByDate(x + plus, rep2.getY() + 30, query1, fromStr1, toStr1);
 				} catch (SQLException e1) {
+					e1.printStackTrace();
+				}
+			}
+		});
+
+		report2 = new JButton("ЕКСПОРТ В Excel");
+		report2.setSize(150, 30);
+		report2.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				SimpleDateFormat format2 = new SimpleDateFormat("yyyy-MM-dd");
+				String fromStr1 = format2.format(calendar_from.getDate());
+				String toStr1 = format2.format(calendar_to.getDate());
+				String q1 = "Накл За Датою";
+				try {
+					Export exp1 = new Export(table2, "Накладні за період", q1);
+				} catch (IOException e1) {
 					e1.printStackTrace();
 				}
 			}
@@ -163,6 +197,21 @@ public class BillsReport extends Report {
 			}
 		});
 
+		report3 = new JButton("ЕКСПОРТ В Excel");
+		report3.setSize(150, 30);
+		report3.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				String prov = "" + cb1.getSelectedItem();
+				String good = "" + cb2.getSelectedItem();
+				String q1 = "Накл За " + good + " Від " + prov;
+				try {
+					Export exp1 = new Export(table3, "Накладні з " + good + " від " + prov, q1);
+				} catch (IOException e1) {
+					e1.printStackTrace();
+				}
+			}
+		});
+
 		// четвертий звіт
 		JLabel rep4 = new JLabel("Переглянути накладні від певного постачальника,");
 		rep4.setFont(new Font("", Font.PLAIN, 15));
@@ -178,16 +227,16 @@ public class BillsReport extends Report {
 
 		JDateChooser calendar_from1 = new JDateChooser();
 		calendar_from1.setCalendar(Calendar.getInstance());
-		calendar_from1.setSize(100,30);
+		calendar_from1.setSize(100, 30);
 		calendar_from1.setLocation(rep4h.getX() + 130, rep4h.getY() + 5);
 		calendar_from1.setDateFormatString("yyyy-MM-dd");
-		
+
 		JDateChooser calendar_to1 = new JDateChooser();
 		calendar_to1.setCalendar(Calendar.getInstance());
-		calendar_to1.setSize(100,30);
+		calendar_to1.setSize(100, 30);
 		calendar_to1.setLocation(calendar_from1.getX() + 130, calendar_from1.getY());
 		calendar_to1.setDateFormatString("yyyy-MM-dd");
-		
+
 		JLabel rep4p = new JLabel("по");
 		rep4p.setFont(new Font("", Font.PLAIN, 16));
 		rep4p.setSize(30, 30);
@@ -243,71 +292,106 @@ public class BillsReport extends Report {
 				}
 			}
 		});
+		
+		report4 = new JButton("ЕКСПОРТ В Excel");
+		report4.setSize(150, 30);
+		report4.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				String prov = "" + cb3.getSelectedItem();
+				String q1 = "Накл Від " + prov;
+				try {
+					Export exp1 = new Export(table4, "Накладні від " + prov, q1);
+				} catch (IOException e1) {
+					e1.printStackTrace();
+				}
+			}
+		});
 
 		// п'ятий звіт
 		JLabel rep5 = new JLabel("Переглянути накладні загальна сума яких перевищує : ");
 		rep5.setFont(new Font("", Font.PLAIN, 15));
 		rep5.setSize(400, 30);
 		rep5.setLocation(x + plus, rep4p.getY() + 400 + between);
-		
+
 		JLabel rep5h = new JLabel("не перевищує :");
 		rep5h.setFont(new Font("", Font.PLAIN, 15));
 		rep5h.setSize(200, 30);
 		rep5h.setLocation(x + plus + 270, rep5.getY() + 30);
-		
+
 		more = new JTextField();
 		more.setSize(100, 30);
-		more.setLocation(rep5.getX() + 400 - 10, rep5.getY() -5);
-		
+		more.setLocation(rep5.getX() + 400 - 10, rep5.getY() - 5);
+
 		less = new JTextField();
 		less.setSize(100, 30);
 		less.setLocation(more.getX(), rep5h.getY() + 5);
-		
+
 		OK2 = new JButton("ok");
 		OK2.setSize(50, 30);
 		OK2.setLocation(more.getX() + 120, more.getY());
-		
+
 		OK3 = new JButton("ok");
 		OK3.setSize(50, 30);
 		OK3.setLocation(less.getX() + 120, less.getY());
-		
+
 		scrollPane5 = new JScrollPane();
-		
+
 		String moreStr = more.getText();
 		String lessStr = less.getText();
-		
+
 		String query4 = "Select * from bill where sum_of_bill >= '" + moreStr + "';";
-		
+
 		OK2.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				try {
 					mainPanel.remove(scrollPane5);
-					
+
 					String moreStr = more.getText();
-					
+
 					BillByMoreSum(x + plus, rep5h.getY() + 30, query4, moreStr);
 				} catch (SQLException e1) {
 					e1.printStackTrace();
 				}
 			}
 		});
-		
+
 		String query5 = "Select * from bill where sum_of_bill <= '" + lessStr + "';";
-		
+
 		OK3.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				try {
 					mainPanel.remove(scrollPane5);
-					
+
 					String lessStr = less.getText();
-					
-					BillByLessSum(x + plus, rep5h.getY() + 30, query5,lessStr);
+
+					BillByLessSum(x + plus, rep5h.getY() + 30, query5, lessStr);
 				} catch (SQLException e1) {
 					e1.printStackTrace();
 				}
 			}
 		});
 		
+		report5 = new JButton("ЕКСПОРТ В Excel");
+		report5.setSize(150, 30);
+		report5.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				String q;
+				if(flag==true)
+				{
+					q = more.getText();
+				}else 
+				{
+					q = less.getText();
+				}
+				String q1 = "Накл За Сум " + q;
+				try {
+					Export exp1 = new Export(table5, "Накладні за певною сумою " , q1);
+				} catch (IOException e1) {
+					e1.printStackTrace();
+				}
+			}
+		});
+
 		mainPanel.setLayout(null);
 		mainPanel.setVisible(true);
 		mainPanel.setPreferredSize(new Dimension(950, 2150));
@@ -333,7 +417,7 @@ public class BillsReport extends Report {
 		mainPanel.add(OK1);
 		mainPanel.add(all);
 		mainPanel.add(rep4p);
-		
+
 		mainPanel.add(rep5);
 		mainPanel.add(rep5h);
 		mainPanel.add(more);
@@ -341,10 +425,22 @@ public class BillsReport extends Report {
 		mainPanel.add(OK2);
 		mainPanel.add(OK3);
 
+		mainPanel.add(report1);
+		mainPanel.add(report2);
+		mainPanel.add(report3);
+		mainPanel.add(report4);
+		mainPanel.add(report5);
+
 		mainScroll = new JScrollPane(mainPanel, JScrollPane.VERTICAL_SCROLLBAR_ALWAYS,
 				JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
 		mainScroll.setLocation(frame.getX() + 10, frame.getHeight() / 3 + 5);
 		mainScroll.setSize(frame.getWidth() - 20, 450);
+
+		report1.setLocation(mainScroll.getWidth() - 200, rep2.getY() - 40);
+		report2.setLocation(mainScroll.getWidth() - 200, rep3.getY() - 40);
+		report3.setLocation(mainScroll.getWidth() - 200, rep4.getY() - 40);
+		report4.setLocation(mainScroll.getWidth() - 200, rep5.getY() - 40);
+		report5.setLocation(mainScroll.getWidth() - 200, rep5.getY() + 380);
 
 		frame.add(mainScroll);
 	}
@@ -385,17 +481,19 @@ public class BillsReport extends Report {
 				+ " name_of_provider = '" + prov + "';";
 		paintTheTable(query, x, y, db, 4);
 	}
-	
+
 	public void BillByMoreSum(int x, int y, String query, String more) throws SQLException {
 		DataBase db = new DataBase();
 		query = "Select * from bill where sum_of_bill >= '" + more + "';";
 		paintTheTable(query, x, y, db, 5);
+		flag = true;
 	}
-	
+
 	public void BillByLessSum(int x, int y, String query, String less) throws SQLException {
 		DataBase db = new DataBase();
 		query = "Select * from bill where sum_of_bill <= '" + less + "';";
 		paintTheTable(query, x, y, db, 5);
+		flag = false;
 	}
 
 	private void paintTheTable(String query, int x, int y, DataBase db, int check) {
@@ -429,6 +527,8 @@ public class BillsReport extends Report {
 			switch (check) {
 			case 1:
 				table = new JTable(res, menu);
+				table1 = table;
+				table1.setEnabled(false);
 				scrollPane1 = new JScrollPane(table);
 				scrollPane1.setLocation(x, y + 10);
 				table.setRowHeight(rowHeight);
@@ -441,6 +541,8 @@ public class BillsReport extends Report {
 				break;
 			case 2:
 				table = new JTable(res, menu);
+				table2 = table;
+				table2.setEnabled(false);
 				scrollPane2 = new JScrollPane(table);
 				scrollPane2.setLocation(x, y + 10);
 				table.setRowHeight(rowHeight);
@@ -453,6 +555,8 @@ public class BillsReport extends Report {
 				break;
 			case 3:
 				table = new JTable(res, menu);
+				table3 = table;
+				table3.setEnabled(false);
 				scrollPane3 = new JScrollPane(table);
 				scrollPane3.setLocation(x, y + 10);
 				table.setRowHeight(rowHeight);
@@ -465,6 +569,8 @@ public class BillsReport extends Report {
 				break;
 			case 4:
 				table = new JTable(res, menu);
+				table4 = table;
+				table4.setEnabled(false);
 				scrollPane4 = new JScrollPane(table);
 				scrollPane4.setLocation(x, y + 10);
 				table.setRowHeight(rowHeight);
@@ -477,6 +583,8 @@ public class BillsReport extends Report {
 				break;
 			case 5:
 				table = new JTable(res, menu);
+				table5 = table;
+				table5.setEnabled(false);
 				scrollPane5 = new JScrollPane(table);
 				scrollPane5.setLocation(x, y + 10);
 				table.setRowHeight(rowHeight);

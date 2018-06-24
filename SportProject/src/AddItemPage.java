@@ -342,49 +342,52 @@ public class AddItemPage extends WindowMenu {
                     q += "'" + cb.getSelectedItem() + "', '" + cb1.getSelectedItem() + "');";
                     try {
                         db.add(q);
-                    } catch (SQLException e1) {
-                        e1.printStackTrace();
-                    }
-
-                    String addGoodsQuery = "INSERT INTO billDet VALUES";
-                    int qq = 0;
-                    try {
-                        qq = countOfRows("billDet");
-                    } catch (SQLException e1) {
-                        e1.printStackTrace();
-                    }
-                    for (int cq = 0; cq < goodstable.size(); cq++) {
-                        Vector line = (Vector) goodstable.get(cq);
-                        qq++;
-                        addGoodsQuery += "(" + qq + ", '" + line.get(0) + "', " + line.get(1) + ", " + line.get(2) + ", " + line.get(3) + ", " + line.get(4) + ", " + line.get(5) + ", " + arr[0].getText() + ")";
-                        if (cq < goodstable.size() - 1) addGoodsQuery += ",";
-                        else addGoodsQuery += ";";
-                    }
-
-                    System.out.println(addGoodsQuery);
-                    DataBase dq = new DataBase();
-                    try {
-                        dq.add(addGoodsQuery);
-                        dq.close();
-                    } catch (SQLException e1) {
-                        e1.printStackTrace();
-                    }
-
-                    try {
-                        db.close();
-                        frame.dispose();
-                        if (nameInDB.equals("bill")) {
-                            String que = "select  name_of_goods, price_per_unit, amount, summ, bill_det_id from BillDet where bill_id = " + arr[0].getText() + ";";
-                            AddGoodsOnStor goodsOnStorAdd = new AddGoodsOnStor(nameOfTable, nameInDB, user, que, arr[0].getText());
-                            goodsOnStorAdd.show();
-                            return;
-                        } else {
-                            main.show();
+                        //
+                      //перенести
+                        String addGoodsQuery = "INSERT INTO billDet VALUES";
+                        int qq = 0;
+                        try {
+                            qq = countOfRows("billDet");
+                        } catch (SQLException e1) {
+                            e1.printStackTrace();
                         }
+                        for (int cq = 0; cq < goodstable.size(); cq++) {
+                            Vector line = (Vector) goodstable.get(cq);
+                            qq++;
+                            addGoodsQuery += "(" + qq + ", '" + line.get(0) + "', " + line.get(1) + ", " + line.get(2) + ", " + line.get(3) + ", " + line.get(4) + ", " + line.get(5) + ", " + arr[0].getText() + ")";
+                            if (cq < goodstable.size() - 1) addGoodsQuery += ",";
+                            else addGoodsQuery += ";";
+                        }
+                        System.out.println(addGoodsQuery);
 
+                        DataBase dq = new DataBase();
+                        try {
+                            dq.add(addGoodsQuery);
+                            dq.close();
+                        } catch (SQLException e1) {
+                            e1.printStackTrace();
+                        }
+                        try {
+                            db.close();
+                            frame.dispose();
+                            if (nameInDB.equals("bill")) {
+                                String que = "select  name_of_goods, price_per_unit, amount, summ, bill_det_id from BillDet where bill_id = " + arr[0].getText() + ";";
+                                AddGoodsOnStor goodsOnStorAdd = new AddGoodsOnStor(nameOfTable, nameInDB, user, que, arr[0].getText());
+                                goodsOnStorAdd.show();
+                                return;
+                            } else {
+                                main.show();
+                            }
+
+                        } catch (SQLException e1) {
+                            e1.printStackTrace();
+                        }
+                        //////////////////////////////////////////////////////////////////////////
+                        //
                     } catch (SQLException e1) {
                         e1.printStackTrace();
                     }
+                    errorlabel.setText("Неможливо зберегти запис...");
                 } else {
                     for (int i = 0; i < size; i++) {
                         if (arr[i].getText().isEmpty() || arr[i].getText() == null) {
